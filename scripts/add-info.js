@@ -87,7 +87,7 @@ function displaySearchResults(data) {
     localStorage.setItem('currentResults',data);
     let container = document.getElementById('search-results');
     for (let i = 0; i < container.children.length; i++) {
-        document.document.getElementById('search-results').removeChild(document.getElementById('search-results').children[i]);
+        document.getElementById('search-results').removeChild(document.getElementById('search-results').children[i]);
     }
     for (let i = 0; i < data.products.length; i++) {
         let product = data.products[i];
