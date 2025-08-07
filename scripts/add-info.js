@@ -68,7 +68,8 @@ function reset() {
     fat.value = '';
 
 }
-
+//Search Open Food Facts db
+//Make sure to change url to .org when MVP is launched
 function searchOFF(data){
     if (data.search == '') {alert('You cannot perform an empty search.');}
     else {
@@ -81,11 +82,13 @@ function searchOFF(data){
     .then(json => displaySearchResults(json))
     }
 }
-
+//Iterates the data from OFF and builds an element for each entry
 function displaySearchResults(data) {
     localStorage.setItem('currentResults',data);
     let container = document.getElementById('search-results');
-    delete document.getElementById('search-results').children;
+    for (let i = 0; i < container.children.length; i++) {
+        document.document.getElementById('search-results').removeChild(document.getElementById('search-results').children[i]);
+    }
     for (let i = 0; i < data.products.length; i++) {
         let product = data.products[i];
         console.log(product);
@@ -102,7 +105,7 @@ function displaySearchResults(data) {
         container.appendChild(item);
     }
 }
-
+//Constructs an item element with data passed from displaySearchResults()
 function createSearchItem(data) {
     let item = document.createElement('div');
     item.setAttribute('class','item');
@@ -137,7 +140,7 @@ function createSearchItem(data) {
     macros.appendChild(fiber);
     macros.appendChild(fat);
 
-    //icon.appendChild(addItem);
+    icon.appendChild(addItem);
     icon.appendChild(name);
     item.appendChild(icon);
     item.appendChild(macros);
