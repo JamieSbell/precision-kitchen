@@ -2,8 +2,8 @@ let submit = document.getElementById('submit');
 submit.addEventListener('click',function() {submitInfo();})
 
 let searchButton = document.getElementById('search-button');
-let searchValue = document.getElementById('search').value;
-searchButton.addEventListener('click',function() {searchOFF({search:searchValue});})
+let searchValue = document.getElementById('search');
+searchButton.addEventListener('click',function() {searchOFF({search:searchValue.value});})
 
 const convert = {
     ozToGrams: function(oz) {return oz * 28.34952;},
@@ -72,10 +72,10 @@ function reset() {
 function searchOFF(data){
     if (data.search == '') {alert('You cannot perform an empty search.');}
     else {
-        fetch('https://world.openfoodfacts.net/cgi/search.pl?search_terms=' + data.search + '&search_simple=1&action=process', {
+        fetch('https://us.openfoodfacts.net/api/v2/search?product_type=food&categories_tags_en=' + data.search, {
     method: 'GET',
     headers: { 
-        Authorization: 'Basic ' + btoa('off:off'),
+        Authorization: 'Basic ' + btoa('off:off')
     },})
     .then(response => response.json())
     .then(json => displaySearchResults(json))
@@ -83,8 +83,9 @@ function searchOFF(data){
 }
 
 function displaySearchResults(data) {
-    console.log(data);
+    localStorage.setItem('currentResults',data);
     let container = document.getElementById('search-results');
+    delete document.getElementById('search-results').children;
     for (let i = 0; i < data.products.length; i++) {
         let product = data.products[i];
         console.log(product);
@@ -104,21 +105,31 @@ function displaySearchResults(data) {
 
 function createSearchItem(data) {
     let item = document.createElement('div');
-    let icon = document.createElement('img');
-    icon.setAttribute('src',data.image);
+    item.setAttribute('class','item');
+    let icon = document.createElement('div');
+    icon.setAttribute('class','icon');
+    icon.style.backgroundImage = 'url("' + data.image + '")';
     let name = document.createElement('h3');
     name.appendChild(document.createTextNode(data.name));
+    let addItem = document.createElement('button');
+    addItem.setAttribute('type','button');
+    addItem.setAttribute('class','add-item-button')
     let macros = document.createElement('div');
+    macros.setAttribute('class','nutrients')
     let protein = document.createElement('h4');
+    protein.setAttribute('class','macro');
     protein.appendChild(document.createTextNode('Protein: '));
     protein.appendChild(document.createTextNode(data.protein));
     let carbs = document.createElement('h4');
+    carbs.setAttribute('class','macro');
     carbs.appendChild(document.createTextNode('Carbs: '));
     carbs.appendChild(document.createTextNode(data.carbs));
     let fiber = document.createElement('h4');
+    fiber.setAttribute('class','macro');
     fiber.appendChild(document.createTextNode('Fiber: '));
     fiber.appendChild(document.createTextNode(data.fiber));
     let fat = document.createElement('h4');
+    fat.setAttribute('class','macro');
     fat.appendChild(document.createTextNode('Fat: '));
     fat.appendChild(document.createTextNode(data.fat));
     macros.appendChild(protein);
@@ -126,7 +137,8 @@ function createSearchItem(data) {
     macros.appendChild(fiber);
     macros.appendChild(fat);
 
-    item.appendChild(name);
+    //icon.appendChild(addItem);
+    icon.appendChild(name);
     item.appendChild(icon);
     item.appendChild(macros);
 

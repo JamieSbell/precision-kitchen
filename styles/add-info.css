@@ -1,0 +1,37 @@
+#search-results{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 80%;
+    margin: auto;
+    justify-content: center;
+}
+#search-results .item{
+    text-align: center;
+}
+#search-results .item .icon{
+    background-image: url("../resources/default.png");
+    border: 4px black solid;
+    background-color: #80809d;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+
+}
+#search-results .item .macro{
+    border: 1px black solid;
+    background-color: #9e9e6b;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: 96px;
+}
+
+.add-item-button{
+    background: none;
+    background-image: url("../resources/add-item.svg");
+    border-radius: 8px;
+    border: black 2px solid;
+    width: 64px;
+    height: 64px;
+
+}

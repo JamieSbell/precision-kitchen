@@ -89,8 +89,8 @@ body{
 }
 
 .item .icon{
-    width: 128px;
-    height: 128px;
+    width: 256px;
+    height: 256px;
     background-image: url(../resources/tomato.webp);
     background-size: cover;
     border-bottom-left-radius: 16px;
@@ -99,22 +99,22 @@ body{
 
 .icon h3{
     text-align: center;
-    margin-top: 105px;
-    background: #7059A6;
+    margin-top: 233px;
+    background: #7059a6;
     color: #10183B;
     padding-top: 4px;
-    opacity: 80%;
     border-bottom-left-radius: 16px;
+    width: 256px;
 }
 
-.macros{
+.nutrients{
     flex-direction: column;
     width: 128px;
 }
 
-.macros .macro{
+.nutrients .macro{
     background: #A69759;
-    color: #7d703a;
+    color: #29230d;
     border: #10183B 2px solid;
     padding: 1px;
 }
