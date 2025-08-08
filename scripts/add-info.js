@@ -98,11 +98,13 @@ function displaySearchResults(data) {
         let nutriments = product.nutriments;
         let itemInfo = {
             name: product.product_name,
+            producer: 'Placeholder Producer',
             image: product.image_front_url,
             protein: nutriments.proteins_100g,
             carbs: nutriments.carbohydrates_100g,
             fiber: nutriments.fiber_100g,
             fat: nutriments.fat_100g,
+            tags:['Placeholder','uwu daddy']
         };
         let item = createSearchItem(itemInfo);
         container.appendChild(item);
@@ -113,42 +115,47 @@ function displaySearchResults(data) {
 function createSearchItem(data) {
     let item = document.createElement('div');
     item.setAttribute('class','item');
-    let icon = document.createElement('div');
+
+    let icon = document.createElement('button');
+    icon.setAttribute('type','button');
     icon.setAttribute('class','icon');
     icon.style.backgroundImage = 'url("' + data.image + '")';
-    let name = document.createElement('h3');
-    name.appendChild(document.createTextNode(data.name));
-/* let addItem = document.createElement('button');
-    addItem.setAttribute('type','button');
-    addItem.setAttribute('class','add-item-button');
-    let macros = document.createElement('div');
-    macros.setAttribute('class','nutrients')
-    let protein = document.createElement('h4');
-    protein.setAttribute('class','macro');
-    protein.appendChild(document.createTextNode('Protein: '));
-    protein.appendChild(document.createTextNode(data.protein));
-    let carbs = document.createElement('h4');
-    carbs.setAttribute('class','macro');
-    carbs.appendChild(document.createTextNode('Carbs: '));
-    carbs.appendChild(document.createTextNode(data.carbs));
-    let fiber = document.createElement('h4');
-    fiber.setAttribute('class','macro');
-    fiber.appendChild(document.createTextNode('Fiber: '));
-    fiber.appendChild(document.createTextNode(data.fiber));
-    let fat = document.createElement('h4');
-    fat.setAttribute('class','macro');
-    fat.appendChild(document.createTextNode('Fat: '));
-    fat.appendChild(document.createTextNode(data.fat));
-    macros.appendChild(protein);
-    macros.appendChild(carbs);
-    macros.appendChild(fiber);
-    macros.appendChild(fat); */
 
+    let textContainer = document.createElement('div');
+    textContainer.setAttribute('class','container');
+
+    let label = document.createElement('button');
+    label.setAttribute('type','button');
+    label.setAttribute('class','label');
+    label.appendChild(document.createTextNode(data.name));
+
+    let tags = document.createElement('div');
+    tags.setAttribute('class','tags');
+        for (let i = 0; i < data.tags.length; i++) {
+            let tag = document.createElement('span');
+            tag.setAttribute('class','tag');
+            tag.appendChild(document.createTextNode(data.tags[i]));
+            tags.appendChild(tag);
+        }
     
-    icon.appendChild(name);
+    let buttonContainer = document.createElement('div');
+    buttonContainer.setAttribute('class','container');
+
+        let editButton = document.createElement('button');
+        editButton.setAttribute('type','button');
+        editButton.setAttribute('class','edit');
+
+        let addButton = document.createElement('button');
+        addButton.setAttribute('type','button');
+        addButton.setAttribute('class','add');
+
     item.appendChild(icon);
-    //item.appendChild(addItem);
-    //item.appendChild(macros);
+    textContainer.appendChild(label);
+    textContainer.appendChild(tags);
+    buttonContainer.appendChild(editButton);
+    buttonContainer.appendChild(addButton);
+    item.appendChild(textContainer);
+    item.appendChild(buttonContainer);
 
     return(item);
 }
