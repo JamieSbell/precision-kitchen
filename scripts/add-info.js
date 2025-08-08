@@ -1,13 +1,13 @@
 let submit = document.getElementById('submit');
 submit.addEventListener('click',function() {submitInfo();})
 
-let searchButton = document.getElementById('search-button');
-let searchValue = document.getElementById('search');
-searchButton.addEventListener('click',function() {searchOFF({search:searchValue.value});})
+let searchButton = document.getElementsByClassName('search-button')[0];
+let searchField = document.getElementsByClassName('search-field')[0];
+searchButton.addEventListener('click',function() {searchOFF({search:searchField.value});})
 
 const convert = {
     ozToGrams: function(oz) {return oz * 28.34952;},
-    To100g: function(data) {
+    to100g: function(data) {
         data.protein = Math.floor(data.protein / data.serving * 1000) /10;
         data.carbs = Math.floor(data.carbs / data.serving * 1000) / 10;
         data.fiber = Math.floor(data.fiber / data.serving * 1000) / 10;
@@ -15,6 +15,7 @@ const convert = {
         data.serving = 100;
         return(data);
     },
+    gramsToOz: function() {},
 };
 
 function submitInfo() {
@@ -38,7 +39,7 @@ function submitInfo() {
         data.unit = 'metric-weight';
     }
 
-    data = convert.To100g(data);
+    data = convert.to100g(data);
 
     delete data.unit;
 
@@ -85,6 +86,8 @@ function searchOFF(data){
 }
 //Iterates the data from OFF and builds an element for each entry
 function displaySearchResults(data) {
+    //Saving the OFF data to local storage for future use. Items will refer back to this data.
+    //This data should also be an array, saving each page in a search to an index to reduce OFF requests and improve loading time.
     localStorage.setItem('currentResults',data);
     let oldContainer = document.getElementById('search-results');
     document.body.removeChild(oldContainer);
@@ -94,7 +97,6 @@ function displaySearchResults(data) {
     document.body.appendChild(container);
     for (let i = 0; i < data.products.length; i++) {
         let product = data.products[i];
-        console.log(product);
         let nutriments = product.nutriments;
         let itemInfo = {
             name: product.product_name,
