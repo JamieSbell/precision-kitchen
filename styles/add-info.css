@@ -1,37 +1,55 @@
 #search-results{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 80%;
-    margin: auto;
-    justify-content: center;
+    width: 1058px;
 }
 #search-results .item{
-    text-align: center;
+    height: 144px;
+    border: 2px black solid;
+    border-radius: 16px;
+    box-shadow: -4px, 4px, 8px, 4px black;
+    display: flex;
+    flex-direction: row;
+    text-align: left;
 }
+
 #search-results .item .icon{
     background-image: url("../resources/default.png");
-    border: 4px black solid;
-    background-color: #80809d;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
     background-position: center;
-
-}
-#search-results .item .macro{
-    border: 1px black solid;
-    background-color: #9e9e6b;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    width: 96px;
 }
 
-.add-item-button{
-    background: none;
-    background-image: url("../resources/add-item.svg");
-    border-radius: 8px;
-    border: black 2px solid;
+
+#search-results .item .container{
+    padding: 4px;
+    margin: 4px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+#search-results .item .label{
+    width: auto;
+    border: 2px black solid;
+}
+
+
+#search-results .item .tags{
+    width: auto;
+    border: 2px black solid;
+}
+
+
+#search-results .item .edit{
     width: 64px;
     height: 64px;
+    background-image: url();
+    border: 2px black solid;
+}
 
+
+#search-results .item .add{
+    width: 64px;
+    height: 64px;
+    background-image: url();
+    border: 2px black solid;
 }

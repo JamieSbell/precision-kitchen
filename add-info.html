@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="styles/main.css">
+    <title>Precision Kitchen</title>
     <link rel="stylesheet" href="styles/add-info.css">
     <script defer src="scripts/add-info.js"></script>
 </head>
@@ -26,9 +25,22 @@
         <input type="text" id="search" placeholder="Search for food">
         <button type="button" id="search-button">Search</button>
 
-        <div id="search-results">
-            
+    </div>
+    <div id="search-results" state="">
+        <div class="item">
+            <div class="icon"></div>
+            <div class="container">
+                <button type="button" class="label">Chunky peanut butter</button>
+                <div class="tags">
+                    <h4>Vegan</h4><h4>High fat</h4><h4>Gluten-free</h4>
+                </div>
+            </div>
+            <div class="container">
+                <button type="button" class="edit"></button>
+                <button type="button" class="add"></button>
+            </div>
         </div>
+        
     </div>
 </body>
 </html>
