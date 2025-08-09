@@ -1,23 +1,21 @@
-let submit = document.getElementById('submit');
-submit.addEventListener('click',function() {submitInfo();})
+document.getElementById('submit').addEventListener('click',function() {submitInfo();});
 
 let searchButton = document.getElementsByClassName('search-button')[0];
-let searchField = document.getElementsByClassName('search-field')[0];
-searchButton.addEventListener('click',function() {searchOFF({search:searchField.value});})
-
-const convert = {
-    ozToGrams: function(oz) {return oz * 28.34952;},
-    to100g: function(data) {
-        data.protein = Math.floor(data.protein / data.serving * 1000) /10;
-        data.carbs = Math.floor(data.carbs / data.serving * 1000) / 10;
-        data.fiber = Math.floor(data.fiber / data.serving * 1000) / 10;
-        data.fat = Math.floor(data.fat / data.serving * 1000) / 10;
-        data.serving = 100;
-        return(data);
-    },
-    gramsToOz: function() {},
-};
-
+searchButton.addEventListener('click',function() {searchOFF({search:document.getElementsByClassName('search-field')[0].value});});
+//THe convert object is basically just a table of formulas and functions for converting unit values or formatting.
+    const convert = {
+        ozToGrams: function(oz) {return oz * 28.34952;},
+        to100g: function(data) {
+            data.protein = Math.floor(data.protein / data.serving * 1000) /10;
+            data.carbs = Math.floor(data.carbs / data.serving * 1000) / 10;
+            data.fiber = Math.floor(data.fiber / data.serving * 1000) / 10;
+            data.fat = Math.floor(data.fat / data.serving * 1000) / 10;
+            data.serving = 100;
+            return(data);
+        },
+        gramsToOz: function(g) {return oz / 28.34952;},
+    };
+//Save ingredient to local storage with the data in the add-ingredient modal
 function submitInfo() {
     let data = {
         name: document.getElementById('name').value,
@@ -29,18 +27,16 @@ function submitInfo() {
         fat: Number(document.getElementById('fat').value),
         unit: document.getElementById('unit').value,
     };
-
-    if (data.unit == 'imperial-weight') {
+    //convert ounces to grams
+    if (data.unit == 'oz') {
         data.serving = convert.ozToGrams(serving);
         data.protein = convert.ozToGrams(protein);
         data.carbs = convert.ozToGrams(carbs);
         data.fiber = convert.ozToGrams(fiber);
         data.fat = convert.ozToGrams(fat);
-        data.unit = 'metric-weight';
+        data.unit = 'g';
     }
-
     data = convert.to100g(data);
-
     delete data.unit;
 
     let ingredientsData = JSON.parse(localStorage.getItem('ingredients'));
