@@ -1,7 +1,8 @@
-document.getElementById('submit').addEventListener('click',function() {submitInfo();});
-
 let searchButton = document.getElementsByClassName('search-button')[0];
-searchButton.addEventListener('click',function() {searchOFF({search:document.getElementsByClassName('search-field')[0].value});});
+searchButton.addEventListener('click',function() {
+    searchOFF({search:document.getElementsByClassName('search-field')[0].value});
+    console.log('Hi')
+});
 //THe convert object is basically just a table of formulas and functions for converting unit values or formatting.
     const convert = {
         ozToGrams: function(oz) {return oz * 28.34952;},
@@ -117,6 +118,7 @@ function createSearchItem(data) {
     let icon = document.createElement('button');
     icon.setAttribute('type','button');
     icon.setAttribute('class','icon');
+    icon.setAttribute('fx','hover-fx');
     icon.style.backgroundImage = 'url("' + data.image + '")';
 
     let textContainer = document.createElement('div');
@@ -125,6 +127,7 @@ function createSearchItem(data) {
     let label = document.createElement('button');
     label.setAttribute('type','button');
     label.setAttribute('class','label');
+    label.setAttribute('fx','hover-fx');
     label.appendChild(document.createTextNode(data.name));
 
     let tags = document.createElement('div');
@@ -142,10 +145,15 @@ function createSearchItem(data) {
         let editButton = document.createElement('button');
         editButton.setAttribute('type','button');
         editButton.setAttribute('class','edit');
+        editButton.setAttribute('fx','hover-fx');
+        editButton.addEventListener('click',function() {
+            document.getElementById('edit-item').setAttribute('state','open');
+        });
 
         let addButton = document.createElement('button');
         addButton.setAttribute('type','button');
         addButton.setAttribute('class','add');
+        addButton.setAttribute('fx','hover-fx');
 
     item.appendChild(icon);
     textContainer.appendChild(label);
@@ -156,4 +164,40 @@ function createSearchItem(data) {
     item.appendChild(buttonContainer);
 
     return(item);
+}
+let buttonsArray = document.getElementsByTagName('button');
+for (let i = 0; i < buttonsArray.length; i++){
+
+    let currentButton = buttonsArray[i];
+
+    if (currentButton.getAttribute('class') == 'modal-cancel'|| currentButton.getAttribute('class') == 'modal-x') {
+        currentButton.addEventListener('click', function() {currentButton.closest('.modal').setAttribute('state','closed');})
+    }
+
+    if (currentButton.getAttribute('class') == 'modal-save') {
+        currentButton.addEventListener('click', function() {
+            let currentModal = currentButton.closest('.modal');
+            currentModal.setAttribute('state','closed');
+            let data = {
+                name:currentModal.getElementsByClassName('')[0],
+                producer:0,
+                tags:0,
+                unit:0,
+                serving:0,
+                protein:0,
+                carbs:0,
+                fiber:0,
+                fat:0,
+                images:{
+                    front:0,
+                    barcode:0,
+                    nutritionLabel:0,
+                    back:0,
+                    ingredients:0,
+                },
+
+            }
+
+        })
+    }
 }

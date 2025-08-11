@@ -8,40 +8,40 @@
     <script defer src="scripts/add-info.js"></script>
 </head>
 <body>
-
     <div class="modal" id="edit-item" state="open">
         <div class="modal-header">
             <span class="modal-label">Edit Ingredient</span>
-            <button type="button" class="modal-x"></button>
+            <button type="button" class="modal-x" fx="hover-fx"></button>
         </div>
 
         <div class="modal-content">
-            <div class="container" subclass="image-uploader">
-                <input type="file" accept="img" id="upload-image" state="front">
+            <div class="container" subclass="image-grid">
+                <input type="file" accept="img" class="upload-image" fx="hover-fx" state="front">
+                <h4 class="upload-label">Front image</h4>
                 <div class="container">
-                    <button type="button" class="image-thumbnail" state="front">
+                    <button type="button" class="image-thumbnail" fx="hover-fx" state="front">
                         <p class="image-label">Front image</p>
                     </button>
-                    <button type="button" class="image-thumbnail" state="back">
+                    <button type="button" class="image-thumbnail" fx="hover-fx" state="back">
                         <p class="image-label">Back image</p>
                     </button>
-                    <button type="button" class="image-thumbnail" state="barcode">
+                    <button type="button" class="image-thumbnail" fx="hover-fx" state="barcode">
                         <p class="image-label">Barcode</p>
                     </button>
-                    <button type="button" class="image-thumbnail" state="nutrition">
+                    <button type="button" class="image-thumbnail" fx="hover-fx" state="nutrition">
                         <p class="image-label">Nutrition label</p>
                     </button>
-                    <button type="button" class="image-thumbnail" state="ingredients">
+                    <button type="button" fx="hover-fx" class="image-thumbnail" state="ingredients">
                         <p class="image-label">Ingredients</p>
                     </button>
                 </div>
             </div>
             <div class="container" subclass="item-details">
-                <input type="text" id="item-name" placeholder="Name">
+                <input type="text" class="item-name" fx="hover-fx" placeholder="Name">
                 <hr>
-                <div class="container" subclass="serving">
+                <div class="container" subclass="serving" fx="hover-fx">
                     <input type="number" class="amount" placeholder="Serving">
-                    <select class="unit">
+                    <select class="unit" >
                         <option value="g">Grams</option>
                         <option value="oz">Ounces</option>
                     </select>
@@ -49,25 +49,25 @@
                 <div class="container">
                     <span class="macro">
                         <h4>Protein</h4>
-                        <input type="number" class="protein">
+                        <input type="number" fx="hover-fx" class="protein">
                     </span>
                     <span class="macro">
                         <h4>Carbs</h4>
-                        <input type="number" class="carbs">
+                        <input type="number" fx="hover-fx" class="carbs">
                     </span>
                     <span class="macro">
                         <h4>Fiber</h4>
-                        <input type="number" class="fiber">
+                        <input type="number" fx="hover-fx" class="fiber">
                     </span>
                     <span class="macro">
                         <h4>Fat</h4>
-                        <input type="number" class="fat">
+                        <input type="number" fx="hover-fx" class="fat">
                     </span>
                 </div>
                 <div class="container">
                     <h4>Tags</h4>
                     <div class="tags">
-                        <input type="text" class="tags">
+                        <input type="text" fx="hover-fx" class="tags">
                     </div>
                 </div>
 
@@ -75,20 +75,16 @@
         </div>
 
         <div class="modal-footer">
-            <button type="button" class="modal-cancel">Cancel</button>
-            <button type="button" class="modal-save">Save</button>
+            <button type="button" class="modal-cancel" fx="hover-fx">Cancel</button>
+            <button type="button" class="modal-save" fx="hover-fx">Save</button>
         </div>
-
-
     </div>
 
     <div class="search">
-        <input type="text" class="search-field">
-        <button type="button" class="search-button"></button>
+        <input type="text" class="search-field" fx="hover-fx" placeholder="Search Open Food Facts for ingredients...">
+        <button type="button" class="search-button" fx="hover-fx"></button>
     </div>
 
-    <div id="search-results" state="">
-        
-    </div>
+    <div id="search-results" state=""></div>
 </body>
 </html>

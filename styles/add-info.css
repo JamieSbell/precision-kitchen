@@ -22,13 +22,25 @@ body{
     flex-wrap: wrap;
     justify-content: center;
 }
-
+*[fx="hover-fx"]{
+    filter: brightness(1);
+}
+    *[fx="hover-fx"]:hover{
+        filter: brightness(1.2);
+    }
+    *[fx="hover-fx"]:active{
+        filter: brightness(0.8);
+    }
 .image-label{
     display: none;
     text-align: center;
     color: #fff;
-    position: relative;
-
+    position: absolute;
+    bottom: 0;
+    background-color: #0000008e;
+    font-size: smaller;
+    width: 64px;
+    height: fit-content;
 }
 
 #search-results{
@@ -48,7 +60,7 @@ body{
     background-color: #dcdcdc;
 }
 
-.search, .item, .icon, .label, .tags, .edit, .add{
+.item, .icon, .label, .tags, .edit, .add{
     border: var(--border-style-default);
     border-radius: var(--border-radius-default);
 }
@@ -122,24 +134,39 @@ body{
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    background-color: #f3f3f3;
+    background-color: #dcdcdc;
     width: 40lvw;
     height: 64px;
     margin-left: auto;
     margin-right: auto;
+    border-radius: var(--border-radius-default);
 }
-
+    .search:hover{
+        cursor: text;
+    }
+    .search:has(> .search-button:hover){
+        filter: brightness(1);
+    }
 .search-button{
     background-image: url("../resources/search-icon.svg");
     padding: 16px;
     background-size: 32px;
     margin-left: auto;
     margin-right: 16px;
+    filter: brightness(0.5);
 }
+    .search-button:hover{
+        filter: brightness(0.7);
+        cursor:pointer;
+    }
+    .search-button:active{
+        filter: brightness(0.4);
+        cursor:pointer;
+    }
 .search-field{
-    text-align: center;
     flex:content;
     font-size: 24px;
+    margin-left: 16px;
 }
 *:focus-visible{
     outline: none;
@@ -153,12 +180,11 @@ body{
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: 20lvh;
-    left: 20lvw;
-    right: 20lvw;
-    bottom: 20lvh;
-    width: 60lvw;
-    height: 60lvh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: fit-content;
+    height: fit-content;
     background-color: #eaeaea;
     border-radius: var(--border-radius-default);
 
@@ -170,7 +196,6 @@ body{
     justify-content: center;
     border-bottom: #d9d9d9 solid 2px;
 }
-
 .modal-x{
     background-image: url("../resources/x-icon.svg");
     margin-left: auto;
@@ -178,7 +203,6 @@ body{
     background-size: 16px 16px ;
     padding: 8px;
 }
-
 .modal-label{
     margin-left: auto;
     margin-top: 8px;
@@ -190,8 +214,10 @@ body{
     flex-direction: row;
     flex-wrap: wrap;
 }
-
-.modal-content #upload-image{
+.modal-content .upload-label{
+    text-align: center;
+}
+.modal-content .upload-image{
     background-image: url("../resources/default.png");
     background-size: contain;
     margin: 8px;
@@ -199,23 +225,12 @@ body{
     height: 256px;
     color: #ffffff00;
     border-radius: var(--border-radius-default);
-    filter: brightness(1);
 }
-
-
-.modal-content #upload-image:hover{
-    filter: brightness(1.2);
-    .image-label{
-        display: block;
-        position: fixed;
-        z-index: 2;
+    .modal-content .upload-image::file-selector-button{
+        display: none;
     }
-}
-.modal-content #upload-image:active{
-    filter: brightness(0.8);
-}
 
-.modal-content .container[subclass="image-uploader"]{
+.modal-content .container[subclass="image-grid"]{
     width: 264px;
     .container{
         margin-left: 16px;
@@ -228,20 +243,10 @@ body{
     height: 64px;
     margin: 4px;
     border-radius: var(--border-radius-default);
-    filter: brightness(1);
 }
-.image-thumbnail:hover{
-    filter: brightness(1.2);
-    .image-label{
+    .image-thumbnail:hover .image-label{
         display: block;
-        position: fixed;
-        z-index: 2;
     }
-}
-.modal-content #upload-image::file-selector-button{
-    display: none;
-}
-
 .modal-content .container[subclass="item-details"]{
     margin: 8px;
     flex-grow: 1;
@@ -255,7 +260,7 @@ body{
     }
 }
 
-.modal-content .container[subclass="item-details"] #item-name{
+.modal-content .container[subclass="item-details"] .item-name{
     width:100%;
     text-align: center;
     font-size: 20px;
@@ -292,8 +297,12 @@ body{
     border-top: #d9d9d9 solid 2px;
     justify-content: right;
 
-    *{
+    button{
+        margin-top: 4px;
+        margin-bottom: 4px;
         margin-right: 8px;
         padding: 8px;
+        background-color: #d9d9d9;
+        border-radius: var(--border-radius-default);
     }
 }
