@@ -147,7 +147,8 @@ function createSearchItem(data) {
         editButton.setAttribute('class','edit');
         editButton.setAttribute('fx','hover-fx');
         editButton.addEventListener('click',function() {
-            document.getElementById('edit-item').setAttribute('state','open');
+        document.getElementById('edit-item').setAttribute('state','open');
+        toggleCurtain(true);
         });
 
         let addButton = document.createElement('button');
@@ -156,12 +157,12 @@ function createSearchItem(data) {
         addButton.setAttribute('fx','hover-fx');
 
     item.appendChild(icon);
+    item.appendChild(textContainer);
+    item.appendChild(buttonContainer);
     textContainer.appendChild(label);
     textContainer.appendChild(tags);
     buttonContainer.appendChild(editButton);
     buttonContainer.appendChild(addButton);
-    item.appendChild(textContainer);
-    item.appendChild(buttonContainer);
 
     return(item);
 }
@@ -171,7 +172,9 @@ for (let i = 0; i < buttonsArray.length; i++){
     let currentButton = buttonsArray[i];
 
     if (currentButton.getAttribute('class') == 'modal-cancel'|| currentButton.getAttribute('class') == 'modal-x') {
-        currentButton.addEventListener('click', function() {currentButton.closest('.modal').setAttribute('state','closed');})
+        currentButton.addEventListener('click', function() {currentButton.closest('.modal').setAttribute('state','closed');
+        toggleCurtain(false);
+        })
     }
 
     if (currentButton.getAttribute('class') == 'modal-save') {
@@ -199,5 +202,18 @@ for (let i = 0; i < buttonsArray.length; i++){
             }
 
         })
+    }
+}
+
+function toggleCurtain(mode){
+    if (mode == false){
+        document.body.removeChild(document.getElementById('curtain'));
+        
+    }
+
+    if (mode == true){
+        let curtain = document.createElement('div');
+        curtain.setAttribute('id','curtain');
+        document.body.appendChild(curtain);
     }
 }
