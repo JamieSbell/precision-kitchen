@@ -143,6 +143,7 @@ body{
     margin-right: auto;
     border-radius: var(--border-radius-default);
     margin-top: 32px;
+    margin-bottom: 16px;
 }
     .search:hover{
         cursor: text;
@@ -319,4 +320,40 @@ body{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.hero{
+    max-width: 50lvw;
+    height: 30lvh;
+    background-size: cover;
+    background-color: rgb(58, 130, 72);
+    background-image: url("../resources/add-item-hero.jpg");
+    position: relative;
+    left: 50%;
+    translate: -50%;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    border-radius: var(--border-radius-default);
+}
+
+.hero h2{
+    color: #ffffff;
+    background-color: #0000004c;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: 32px;
+    text-align: center;
+    position: relative;
+    top: 45%;
+}
+#alert[state=closed] {
+    display: none;
+}
+#alert[state=open] {
+    display: flex;
+    position: fixed;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    translate: -50%, -50%;
 }

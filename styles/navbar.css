@@ -3,7 +3,7 @@
     top: 0;
     background-color: blueviolet;
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
     overflow: hidden;
     z-index: 4;
 }

@@ -1,7 +1,6 @@
 let searchButton = document.getElementsByClassName('search-button')[0];
 searchButton.addEventListener('click',function() {
     searchOFF({search:document.getElementsByClassName('search-field')[0].value});
-    console.log('Hi')
 });
 //THe convert object is basically just a table of formulas and functions for converting unit values or formatting.
     const convert = {
@@ -178,42 +177,46 @@ for (let i = 0; i < buttonsArray.length; i++){
     }
 
     if (currentButton.getAttribute('class') == 'modal-save') {
-        currentButton.addEventListener('click', function() {
-            let currentModal = currentButton.closest('.modal');
-            currentModal.setAttribute('state','closed');
-            let data = {
-                name:currentModal.getElementsByClassName('')[0],
-                producer:0,
-                tags:0,
-                unit:0,
-                serving:0,
-                protein:0,
-                carbs:0,
-                fiber:0,
-                fat:0,
-                images:{
-                    front:0,
-                    barcode:0,
-                    nutritionLabel:0,
-                    back:0,
-                    ingredients:0,
-                },
-
-            }
-
-        })
-    }
-}
+        if (currentButton.closest('.modal').getAttribute('id') == 'edit-item') {
+            currentButton.addEventListener('click', function() {saveIngredient({
+            target:currentButton.closest('.modal'),
+            name:0,producer:0,tags:0,unit:0,serving:0,protein:0,carbs:0,fiber:0,fat:0,
+            images:{front:0,barcode:0,nutritionLabel:0,back:0,ingredients:0}
+        }
+        
+        )})}}}
 
 function toggleCurtain(mode){
     if (mode == false){
         document.body.removeChild(document.getElementById('curtain'));
-        
     }
 
     if (mode == true){
         let curtain = document.createElement('div');
         curtain.setAttribute('id','curtain');
         document.body.appendChild(curtain);
+    }
+}
+function saveIngredient(data) {
+    let target = data.target;
+    let container = target.getElementsByClassName('container')[2];
+    data.name = container.getElementsByClassName('item-name')[0].value;
+    data.tags = data.target.getElementsByClassName('tag')[0].value;
+    data.serving = data.target.getElementsByClassName('amount')[0].value;
+    data.unit = data.target.getElementsByClassName('unit')[0].value;
+    data.protein = data.target.getElementsByClassName('protein')[0].value;
+    data.carbs = data.target.getElementsByClassName('carbs')[0].value;
+    data.fiber = data.target.getElementsByClassName('fiber')[0].value;
+    data.fat = data.target.getElementsByClassName('fat')[0].value;
+
+    document.getElementById('edit-item').setAttribute('state','closed');
+    toggleCurtain(false);
+    showElement('alert',{message:'Ingredient saved successfully!'});
+}
+
+function showElement(element,data) {
+    if (element == 'alert') {
+        document.getElementById('alert').children[0].textContent = data.message;
+        document.getElementById('alert').setAttribute('state','open');
     }
 }

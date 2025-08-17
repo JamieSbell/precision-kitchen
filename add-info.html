@@ -10,14 +10,16 @@
 </head>
 <body>
     <div class="navbar">
-        <button class="hamburger">Hamburger</button>
-        <button>Meals</button>
-        <button>Recipes</button>
-        <button>Ingredients</button>
         <button class="home-button">Precision Kitchen</button>
+        <button>Ingredients</button>
+        <button>Recipes</button>
+        <button>Meals</button>
+        <button class="hamburger">Hamburger</button>
     </div>
-
-    <div class="modal" id="edit-item" state="open">
+    <div id="alert" state="closed">
+        <p class="alert-message"></p>
+    </div>
+    <div class="modal" id="edit-item" state="closed">
         <div class="modal-header">
             <span class="modal-label">Edit Ingredient</span>
             <button type="button" class="modal-x" fx="hover-fx"></button>
@@ -76,7 +78,7 @@
                 <div class="container">
                     <h4>Tags</h4>
                     <div class="tags">
-                        <input type="text" fx="hover-fx" class="tags">
+                        <input type="text" fx="hover-fx" class="tag">
                     </div>
                 </div>
 
@@ -87,6 +89,10 @@
             <button type="button" class="modal-cancel" fx="hover-fx">Cancel</button>
             <button type="button" class="modal-save" fx="hover-fx">Save</button>
         </div>
+    </div>
+
+    <div class="hero">
+        <h2>Search for your favorite products!</h2>
     </div>
 
     <div class="search">
