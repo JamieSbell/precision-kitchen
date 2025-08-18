@@ -4,27 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Precision Kitchen</title>
-    <link rel="stylesheet" href="styles/navbar.css">
+    <script defer src="scripts/ingredients.js"></script>
     <link rel="stylesheet" href="styles/add-info.css">
-    <script defer src="scripts/add-info.js"></script>
+    <link rel="stylesheet" href="styles/navbar.css">
 </head>
 <body>
     <div class="navbar">
-        <button class="home-button">Precision Kitchen</button>
-        <button>Ingredients</button>
-        <button>Recipes</button>
-        <button>Meals</button>
-        <button class="hamburger">Hamburger</button>
+        <a href="main.html" class="home-button">Precision Kitchen</a>
+        <a href="ingredients.html">Ingredients</a>
+        <a href="recipes.html">Recipes</a>
+        <a href="meals.html">Meals</a>
+        <a class="hamburger">Hamburger</a>
     </div>
-    <div id="alert" state="closed">
-        <p class="alert-message"></p>
-    </div>
+
     <div class="modal" id="edit-item" state="closed">
         <div class="modal-header">
             <span class="modal-label">Edit Ingredient</span>
             <button type="button" class="modal-x" fx="hover-fx"></button>
         </div>
-
         <div class="modal-content">
             <div class="container" subclass="image-grid">
                 <input type="file" accept="img" class="upload-image" fx="hover-fx" state="front">
@@ -81,25 +78,14 @@
                         <input type="text" fx="hover-fx" class="tag">
                     </div>
                 </div>
-
             </div>
         </div>
-
         <div class="modal-footer">
             <button type="button" class="modal-cancel" fx="hover-fx">Cancel</button>
             <button type="button" class="modal-save" fx="hover-fx">Save</button>
         </div>
     </div>
-
-    <div class="hero">
-        <h2>Search for your favorite products!</h2>
-    </div>
-
-    <div class="search">
-        <input type="text" class="search-field" fx="hover-fx" placeholder="Search Open Food Facts for ingredients...">
-        <button type="button" class="search-button" fx="hover-fx"></button>
-    </div>
-
-    <div id="search-results" state=""></div>
+    
+    <div id="item-grid" state="default-empty"></div>
 </body>
 </html>
