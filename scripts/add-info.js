@@ -1,8 +1,12 @@
+addEventListener('DOMContentLoaded',function() {
+    initializeButtons();
+})
+
 let searchButton = document.getElementsByClassName('search-button')[0];
 searchButton.addEventListener('click',function() {
     searchOFF({search:document.getElementsByClassName('search-field')[0].value});
 });
-//THe convert object is basically just a table of formulas and functions for converting unit values or formatting.
+//The convert object is basically just a table of formulas and functions for converting unit values or formatting.
     const convert = {
         ozToGrams: function(oz) {return oz * 28.34952;},
         to100g: function(data) {
@@ -48,22 +52,13 @@ function submitInfo() {
 }
 
 function reset() {
-    let name = document.getElementById('name');
-    let tags = document.getElementById('tags');
-    let serving = document.getElementById('serving');
-    let protein = document.getElementById('protein');
-    let carbs = document.getElementById('carbs');
-    let fiber = document.getElementById('fiber');
-    let fat = document.getElementById('fat');
-
-    name.value = '';
-    tags.value = '';
-    serving.value = '';
-    protein.value = '';
-    carbs.value = '';
-    fiber.value = '';
-    fat.value = '';
-
+    document.getElementById('name').value = '';
+    tags = document.getElementById('tags').value = '';
+    serving = document.getElementById('serving').value = '';
+    protein = document.getElementById('protein').value = '';
+    carbs = document.getElementById('carbs').value = '';
+    fiber = document.getElementById('fiber').value = '';
+    fat = document.getElementById('fat').value = '';
 }
 //Search Open Food Facts db
 //Make sure to change url to .org when MVP is launched
@@ -74,7 +69,6 @@ function searchOFF(data){
     method: 'GET',
     headers: { 
         Authorization: 'Basic ' + btoa('off:off'),
-        //Custom_User_Agent: 'JamieSBell/Precision.Kitchen (jamie.samantha.bell@gmail.com)'
     },})
     .then(response => response.json())
     .then(json => displaySearchResults(json))
@@ -85,8 +79,7 @@ function displaySearchResults(data) {
     //Saving the OFF data to local storage for future use. Items will refer back to this data.
     //This data should also be an array, saving each page in a search to an index to reduce OFF requests and improve loading time.
     localStorage.setItem('currentResults',data);
-    let oldContainer = document.getElementById('search-results');
-    document.body.removeChild(oldContainer);
+    document.body.removeChild(document.getElementById('search-results'));
     let container = document.createElement('div');
     container.setAttribute('id','search-results');
     container.setAttribute('state','load');
@@ -145,9 +138,7 @@ function createSearchItem(data) {
         editButton.setAttribute('type','button');
         editButton.setAttribute('class','edit');
         editButton.setAttribute('fx','hover-fx');
-        editButton.addEventListener('click',function() {
-        document.getElementById('edit-item').setAttribute('state','open');
-        toggleCurtain(true);
+        editButton.addEventListener('click',function() {openModal('edit-item',{name:'hi',tags:'wawa',amount:10,protein:1,carbs:2,fiber:1,fat:3})
         });
 
         let addButton = document.createElement('button');
@@ -165,26 +156,30 @@ function createSearchItem(data) {
 
     return(item);
 }
-let buttonsArray = document.getElementsByTagName('button');
-for (let i = 0; i < buttonsArray.length; i++){
+
+function initializeButtons()
+{
+    let buttonsArray = document.getElementsByTagName('button');
+    for (let i = 0; i < buttonsArray.length; i++){
 
     let currentButton = buttonsArray[i];
 
-    if (currentButton.getAttribute('class') == 'modal-cancel'|| currentButton.getAttribute('class') == 'modal-x') {
+    if (currentButton.getAttribute('class') == 'modal-cancel' || currentButton.getAttribute('class') == 'modal-x') {
         currentButton.addEventListener('click', function() {currentButton.closest('.modal').setAttribute('state','closed');
         toggleCurtain(false);
         })
     }
 
-    if (currentButton.getAttribute('class') == 'modal-save') {
-        if (currentButton.closest('.modal').getAttribute('id') == 'edit-item') {
-            currentButton.addEventListener('click', function() {saveIngredient({
-            target:currentButton.closest('.modal'),
-            name:0,producer:0,tags:0,unit:0,serving:0,protein:0,carbs:0,fiber:0,fat:0,
-            images:{front:0,barcode:0,nutritionLabel:0,back:0,ingredients:0}
-        }
-        
-        )})}}}
+        if (currentButton.getAttribute('class') == 'modal-save') {
+            if (currentButton.closest('.modal').getAttribute('id') == 'edit-item') {
+                currentButton.addEventListener('click', function() {saveIngredient(
+                    {
+                        target:currentButton.closest('.modal'),
+                        name:0,producer:0,tags:0,unit:0,serving:0,protein:0,carbs:0,fiber:0,fat:0,
+                        images:{front:0,barcode:0,nutritionLabel:0,back:0,ingredients:0}
+                    })})}}}
+}
+
 
 function toggleCurtain(mode){
     if (mode == false){
@@ -219,4 +214,31 @@ function showElement(element,data) {
         document.getElementById('alert').children[0].textContent = data.message;
         document.getElementById('alert').setAttribute('state','open');
     }
+}
+
+function openModal(modalId,data) {
+    let modal = document.getElementById(modalId);
+    let container = modal.getElementsByClassName('container')[2];
+
+    container.getElementsByClassName('item-name')[0].value = data.name;
+    container.getElementsByClassName('tag')[0].value = data.tags;
+    container.getElementsByClassName('amount')[0].value = data.amount;
+    container.getElementsByClassName('unit')[0].value = data.unit;
+    container.getElementsByClassName('protein')[0].value = data.protein;
+    container.getElementsByClassName('carbs')[0].value = data.carbs;
+    container.getElementsByClassName('fiber')[0].value = data.fiber;
+    container.getElementsByClassName('fat')[0].value = data.fat;
+
+    modal.setAttribute('state','open');
+    toggleCurtain(true);
+
+
+
+
+}
+
+function closeModal(modalId) {
+    let modal = document.getElementById(modalId);
+    modal.setAttribute('state','closed');
+    toggleCurtain(false);
 }
