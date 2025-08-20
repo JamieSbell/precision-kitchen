@@ -1,5 +1,3 @@
-localStorage.setItem('ingredients',JSON.stringify([{name:'hi'},{name:'no'}]));
-
 function searchLocalDatabase(data) {
     if (data.category == 'ingredients') {searchLocalIngredients(data)}
 }
@@ -25,11 +23,12 @@ function createItem(data) {
     icon.setAttribute('type','button');
     icon.setAttribute('class','item-icon');
     icon.setAttribute('fx','button-fx');
+    icon.style.backgroundImage = data.image;
 
     let label = document.createElement('h4');
 
     label.appendChild(document.createTextNode(data.name));
     container.appendChild(icon);
-    container.appendChild(label);
+    icon.appendChild(label);
     return(container);
 }

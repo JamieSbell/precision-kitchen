@@ -357,8 +357,3 @@ body{
     left: 50%;
     translate: -50%, -50%;
 }
-#item-grid[show-macros="false"] {
-    display: flex;
-    flex-direction: row;
-    margin: 16px;
-}

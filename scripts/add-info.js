@@ -89,8 +89,8 @@ function displaySearchResults(data) {
         let nutriments = product.nutriments;
         let itemInfo = {
             name: product.product_name_en,
-            serving:100,
-            unit:'grams',
+            amount:100,
+            unit:'g',
             producer: product.brands,
             image: product.image_front_url,
             protein: nutriments.proteins_100g,
@@ -189,7 +189,7 @@ function initializeButtons()
                     {
                         target:currentButton.closest('.modal'),
                         name:0,producer:0,tags:0,unit:0,serving:0,protein:0,carbs:0,fiber:0,fat:0,
-                        images:{front:0,barcode:0,nutritionLabel:0,back:0,ingredients:0}
+                        image:0
                     })})}}}
 }
 function toggleCurtain(mode){
@@ -214,11 +214,17 @@ function saveIngredient(data) {
     data.carbs = data.target.getElementsByClassName('carbs')[0].value;
     data.fiber = data.target.getElementsByClassName('fiber')[0].value;
     data.fat = data.target.getElementsByClassName('fat')[0].value;
+    data.image = data.target.getElementsByClassName('upload-image')[0].style.backgroundImage;
+    delete data.target;
 
     let oldData = JSON.parse(localStorage.getItem('ingredients'));
     data = [data];
-    localStorage.setItem('ingredients', JSON.stringify(oldData.concat(data)));
-
+    if (oldData === null) {
+        localStorage.setItem('ingredients', JSON.stringify(data));
+    }
+    else {
+        localStorage.setItem('ingredients', JSON.stringify(oldData.concat(data)));
+    }
     document.getElementById('edit-item').setAttribute('state','closed');
     toggleCurtain(false);
 }
