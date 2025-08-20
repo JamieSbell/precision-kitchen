@@ -78,7 +78,7 @@ function searchOFF(data){
 function displaySearchResults(data) {
     //Saving the OFF data to local storage for future use. Items will refer back to this data.
     //This data should also be an array, saving each page in a search to an index to reduce OFF requests and improve loading time.
-    localStorage.setItem('currentResults',data);
+    localStorage.setItem('currentResults',JSON.stringify(data));
     document.body.removeChild(document.getElementById('search-results'));
     let container = document.createElement('div');
     container.setAttribute('id','search-results');
@@ -88,14 +88,16 @@ function displaySearchResults(data) {
         let product = data.products[i];
         let nutriments = product.nutriments;
         let itemInfo = {
-            name: product.product_name,
-            producer: 'Placeholder Producer',
+            name: product.product_name_en,
+            serving:100,
+            unit:'grams',
+            producer: product.brands,
             image: product.image_front_url,
             protein: nutriments.proteins_100g,
             carbs: nutriments.carbohydrates_100g,
             fiber: nutriments.fiber_100g,
             fat: nutriments.fat_100g,
-            tags:['Placeholder','uwu daddy']
+            tags: product.categories_tags
         };
         let item = createSearchItem(itemInfo);
         container.appendChild(item);
@@ -106,6 +108,7 @@ function displaySearchResults(data) {
 function createSearchItem(data) {
     let item = document.createElement('div');
     item.setAttribute('class','item');
+    item.setAttribute('item-data',JSON.stringify(data));
 
     let icon = document.createElement('button');
     icon.setAttribute('type','button');
@@ -138,7 +141,18 @@ function createSearchItem(data) {
         editButton.setAttribute('type','button');
         editButton.setAttribute('class','edit');
         editButton.setAttribute('fx','hover-fx');
-        editButton.addEventListener('click',function() {openModal('edit-item',{name:'hi',tags:'wawa',amount:10,protein:1,carbs:2,fiber:1,fat:3})
+        editButton.addEventListener('click',function() {openModal('edit-item',{
+            name:getItemProperty(editButton.closest('.item'),'name'),
+            tags:getItemProperty(editButton.closest('.item'),'tags'),
+            unit:getItemProperty(editButton.closest('.item'),'unit'),
+            amount:getItemProperty(editButton.closest('.item'),'amount'),
+            protein:getItemProperty(editButton.closest('.item'),'protein'),
+            carbs:getItemProperty(editButton.closest('.item'),'carbs'),
+            fiber:getItemProperty(editButton.closest('.item'),'fiber'),
+            fat:getItemProperty(editButton.closest('.item'),'fat'),
+            image:getItemProperty(editButton.closest('.item'),'image'),
+            producer:getItemProperty(editButton.closest('.item'),'producer'),
+        })
         });
 
         let addButton = document.createElement('button');
@@ -156,7 +170,6 @@ function createSearchItem(data) {
 
     return(item);
 }
-
 function initializeButtons()
 {
     let buttonsArray = document.getElementsByTagName('button');
@@ -179,8 +192,6 @@ function initializeButtons()
                         images:{front:0,barcode:0,nutritionLabel:0,back:0,ingredients:0}
                     })})}}}
 }
-
-
 function toggleCurtain(mode){
     if (mode == false){
         document.body.removeChild(document.getElementById('curtain'));
@@ -204,9 +215,12 @@ function saveIngredient(data) {
     data.fiber = data.target.getElementsByClassName('fiber')[0].value;
     data.fat = data.target.getElementsByClassName('fat')[0].value;
 
+    let oldData = JSON.parse(localStorage.getItem('ingredients'));
+    data = [data];
+    localStorage.setItem('ingredients', JSON.stringify(oldData.concat(data)));
+
     document.getElementById('edit-item').setAttribute('state','closed');
     toggleCurtain(false);
-    showElement('alert',{message:'Ingredient saved successfully!'});
 }
 
 function showElement(element,data) {
@@ -218,27 +232,30 @@ function showElement(element,data) {
 
 function openModal(modalId,data) {
     let modal = document.getElementById(modalId);
-    let container = modal.getElementsByClassName('container')[2];
+    let container1 = modal.getElementsByClassName('container')[0];
+    let container2 = modal.getElementsByClassName('container')[2];
 
-    container.getElementsByClassName('item-name')[0].value = data.name;
-    container.getElementsByClassName('tag')[0].value = data.tags;
-    container.getElementsByClassName('amount')[0].value = data.amount;
-    container.getElementsByClassName('unit')[0].value = data.unit;
-    container.getElementsByClassName('protein')[0].value = data.protein;
-    container.getElementsByClassName('carbs')[0].value = data.carbs;
-    container.getElementsByClassName('fiber')[0].value = data.fiber;
-    container.getElementsByClassName('fat')[0].value = data.fat;
+    container1.getElementsByClassName('upload-image')[0].style.backgroundImage = 'url("' + data.image + '")';
+
+    container2.getElementsByClassName('item-name')[0].value = data.name;
+    container2.getElementsByClassName('tag')[0].value = data.tags;
+    container2.getElementsByClassName('amount')[0].value = data.amount;
+    container2.getElementsByClassName('unit')[0].value = data.unit;
+    container2.getElementsByClassName('protein')[0].value = data.protein;
+    container2.getElementsByClassName('carbs')[0].value = data.carbs;
+    container2.getElementsByClassName('fiber')[0].value = data.fiber;
+    container2.getElementsByClassName('fat')[0].value = data.fat;
 
     modal.setAttribute('state','open');
     toggleCurtain(true);
-
-
-
-
 }
 
 function closeModal(modalId) {
     let modal = document.getElementById(modalId);
     modal.setAttribute('state','closed');
     toggleCurtain(false);
+}
+function getItemProperty(item,property) {
+    let data = JSON.parse(item.getAttribute('item-data'));
+    return data[property];
 }
