@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precision Kitchen</title>
+    <link rel="stylesheet" href="styles/navbar.css">
+    <link rel="stylesheet" href="styles/add-info.css">
+    <link rel="stylesheet" href="styles/recipes.css">
+    <script defer src="scripts/recipes.js"></script>
+</head>
+<body>
+    <div class="navbar">
+        <a href="main.html" class="home-button">Precision Kitchen</a>
+        <a href="ingredients.html">Ingredients</a>
+        <a href="recipes.html">Recipes</a>
+        <a href="meals.html">Meals</a>
+        <a class="hamburger">Hamburger</a>
+    </div>
+
+    <div class="modal" id="edit-recipe" state="closed">
+        <div class="modal-header">
+            <span class="modal-label">Edit Recipe</span>
+            <button type="button" class="modal-x" fx="hover-fx"></button>
+        </div>
+        <div class="modal-content">
+            <div class="container" subclass="image-grid">
+                <input type="file" accept="img" class="upload-image" fx="hover-fx" state="front">
+                <h4 class="upload-label">Front image</h4>
+                <div class="container">
+                    <button type="button" class="image-thumbnail" fx="hover-fx" state="front">
+                        <p class="image-label">Front image</p>
+                    </button>
+                    <button type="button" class="image-thumbnail" fx="hover-fx" state="back">
+                        <p class="image-label">Back image</p>
+                    </button>
+                    <button type="button" class="image-thumbnail" fx="hover-fx" state="barcode">
+                        <p class="image-label">Barcode</p>
+                    </button>
+                    <button type="button" class="image-thumbnail" fx="hover-fx" state="nutrition">
+                        <p class="image-label">Nutrition label</p>
+                    </button>
+                    <button type="button" fx="hover-fx" class="image-thumbnail" state="ingredients">
+                        <p class="image-label">Ingredients</p>
+                    </button>
+                </div>
+            </div>
+            <div class="container" subclass="item-details">
+                <input type="text" class="item-name" fx="hover-fx" placeholder="Name">
+                <hr>
+                <h3>Ingredients</h3>
+                <button type="button" class="add-ingredient">Add Ingredient</button>
+                <hr>
+                <input type="text" class="recipe-step" placeholder="Add a new step to your recipe here...">
+                <hr>
+                <input type="number" class="final-weight" placeholder="Final weight of the total recipe after all steps.">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="modal-cancel" fx="hover-fx">Cancel</button>
+            <button type="button" class="modal-save" fx="hover-fx">Save</button>
+        </div>
+    </div>
+
+    <div class="recipe-actions">
+        <button type="button" class="new-recipe">New Recipe</button>
+    </div>
+
+    <div id="recipe-display">
+
+    </div>
+</body>
+</html>

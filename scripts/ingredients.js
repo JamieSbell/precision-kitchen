@@ -32,3 +32,15 @@ function createItem(data) {
     icon.appendChild(label);
     return(container);
 }
+
+document.getElementsByClassName('new-ingredient')[0].addEventListener('click',function() {openModal('edit-item',{
+    name:'',
+    tags:'',
+    unit:'g',
+    amount:0,
+    protein:0,
+    carbs:0,
+    fiber:0,
+    fat:0,
+    producer:0
+    })})

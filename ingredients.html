@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Precision Kitchen</title>
+
+    <script defer src="scripts/global.js"></script>
     <script defer src="scripts/ingredients.js"></script>
+
     <link rel="stylesheet" href="styles/navbar.css">
     <link rel="stylesheet" href="styles/add-info.css">
     <link rel="stylesheet" href="styles/ingredients.css">
@@ -20,12 +23,12 @@
 
     <div class="modal" id="edit-item" state="closed">
         <div class="modal-header">
-            <span class="modal-label">Edit Ingredient</span>
+            <span class="modal-label">New Ingredient</span>
             <button type="button" class="modal-x" fx="hover-fx"></button>
         </div>
         <div class="modal-content">
             <div class="container" subclass="image-grid">
-                <input type="file" accept="img" class="upload-image" fx="hover-fx" state="front">
+                <input oninput="updateChooserImage()" type="file" accept="img" class="upload-image" fx="hover-fx" state="front">
                 <h4 class="upload-label">Front image</h4>
                 <div class="container">
                     <button type="button" class="image-thumbnail" fx="hover-fx" state="front">
@@ -87,6 +90,11 @@
         </div>
     </div>
     
+    <div class="ingredients-actions">
+        <button type="button" class="new-ingredient">New Ingredient</button>
+        <a href="ingredient-search.html">Search Open Food Facts for Ingredients</a>
+    </div>
+
     <div id="item-grid" state="default-empty" show-macros="false"></div>
 </body>
 </html>
