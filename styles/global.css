@@ -18,19 +18,24 @@ body{
     width: 100lvw;
     height: 100lvh;
 }
+
 *[fx="hover-fx"]{
     filter: brightness(1);
 }
-    *[fx="hover-fx"]:hover{
-        filter: brightness(1.2);
-    }
-    *[fx="hover-fx"]:active{
-        filter: brightness(0.8);
-    }
+
+*[fx="hover-fx"]:hover{
+    filter: brightness(1.2);
+}
+
+*[fx="hover-fx"]:active{
+    filter: brightness(0.8);
+}
 
 .content{
     padding: 16px;
 }
+
+/* Navbar styling */
 
 .navbar{
     position: sticky;
@@ -59,6 +64,8 @@ body{
 .navbar .hamburger{
     margin-left: auto;
 }
+
+/* Modal styling */
 
 .modal[state="closed"]{
     display: none;
@@ -106,7 +113,8 @@ body{
 .modal-content .upload-label{
     text-align: center;
 }
-.modal-content .upload-image{
+
+.upload-image{
     background-image: url("../resources/default.png");
     background-size: cover;
     margin: 8px;
@@ -115,9 +123,10 @@ body{
     color: #ffffff00;
     border-radius: var(--border-radius-default);
 }
-    .modal-content .upload-image::file-selector-button{
-        display: none;
-    }
+
+.upload-image::file-selector-button{
+    display: none;
+}
 
 .modal-content .container[subclass="image-grid"]{
     width: 264px;
@@ -192,6 +201,38 @@ body{
     }
 }
 
+#new-recipe .modal-content{
+    display: flex;
+    width: 40lvw;
+    flex-direction: column;
+    justify-content: center;
+    margin: 8px;
+    flex-grow: 1;
+    padding: 8px;
+    hr{
+        border: var(--border-style-light);
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+}
+
+#new-recipe .modal-content .upload-image{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#new-recipe .modal-content .recipe-name{
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 32px;
+}
+
+#new-recipe .modal-content .recipe-description{
+    text-align: start;
+    margin-bottom: 16px;
+    height: 300px;
+}
+
 
 
 .modal-footer{
@@ -210,6 +251,8 @@ body{
     }
 }
 
+/* Curtain Styling */
+
 #curtain{
     background-color: rgba(0, 0, 0, 0.5);
     width: 100lvw;
@@ -219,6 +262,8 @@ body{
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+/* Hero styling */
 
 .hero{
     max-width: 50lvw;
@@ -244,9 +289,12 @@ body{
     position: relative;
     top: 45%;
 }
+
+/* Alert styling */
 #alert[state=closed] {
     display: none;
 }
+
 #alert[state=open] {
     display: flex;
     position: fixed;
@@ -254,4 +302,101 @@ body{
     top: 50%;
     left: 50%;
     translate: -50%, -50%;
+}
+
+/* Content styling */
+
+.content{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+/* Panel styling */
+#current-recipe[state="closed"]{
+    display: none;
+}
+
+#current-recipe[state="open"]{
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+    height: 100%;
+    background-color: #efefef;
+    border-radius: var(--border-radius-default);
+
+    hr{
+        border: var(--border-style-light);
+        margin: 8px;
+    }
+}
+
+#current-recipe .recipe-name{
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+#current-recipe .panel-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#current-recipe .recipe-description{
+    height: 128px;
+    background-color: #d9d9d9;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+#current-recipe .recipe-ingredient{
+    display: flex;
+    flex-direction: row;
+    background-color: #d9d9d9;
+    padding: 8px;
+    text-align: center;
+}
+
+#current-recipe .item-details,.item-buttons{
+    display: flex;
+    flex-direction: column;
+}
+
+#current-recipe .item-details{
+    width: 100%;
+}
+
+#current-recipe .ingredient-name{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#current-recipe .item-buttons{
+    margin-left: auto;
+}
+
+#current-recipe .serving{
+    border: var(--border-style-light);
+    margin-left: auto;
+    margin-right: auto;
+}
+#current-recipe .amount{
+    width: 64px;
+    margin-right: 8px;
+}
+#current-recipe .panel-footer{
+    margin-top: auto;
+}
+
+#current-recipe .collapse-panel{
+    position: relative;
+    top: 100%;
+    left: 100%;
 }

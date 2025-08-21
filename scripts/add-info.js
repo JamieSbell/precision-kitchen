@@ -1,3 +1,5 @@
+pageData.currentPage = 'ingredient-search';
+
 let searchButton = document.getElementsByClassName('search-button')[0];
 searchButton.addEventListener('click',function() {
     searchOFF({search:document.getElementsByClassName('search-field')[0].value});
@@ -16,7 +18,7 @@ function submitInfo() {
         unit: document.getElementById('unit').value,
     };
     //convert ounces to grams
-    if (data.unit == 'oz') {
+    if (data.unit === 'oz') {
         data.amount = convert.ozToGrams(amount);
         data.protein = convert.ozToGrams(protein);
         data.carbs = convert.ozToGrams(carbs);
@@ -135,7 +137,8 @@ function createSearchItem(data) {
             fiber:getItemProperty(editButton.closest('.item'),'fiber'),
             fat:getItemProperty(editButton.closest('.item'),'fat'),
             image:'url("' + getItemProperty(editButton.closest('.item'),'image') + '")',
-            producer:getItemProperty(editButton.closest('.item'),'producer')
+            producer:getItemProperty(editButton.closest('.item'),'producer'),
+            id:dataPrefab.emptyIngredient.id
         })
         });
 

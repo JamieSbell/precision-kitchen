@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/recipes.css">
 
-    <script defer src="scripts/recipes.js"></script>
     <script defer src="scripts/global.js"></script>
+    <script defer src="scripts/recipes.js"></script>
 </head>
 <body>
     <div class="navbar">
@@ -18,57 +18,60 @@
         <a href="meals.html">Meals</a>
         <button class="hamburger">|||</button>
     </div>
+    <div class="content">
+        <div id="current-recipe" class="panel" state="open" item-id="">
+        <div class="panel-header">
+            <input type="text" class="recipe-name" placeholder="Name your recipe...">
+            <hr>
+        </div>
+        <div class="panel-content">
+            <input oninput="updateChooserImage()" type="file" accept="img" class="upload-image" fx="hover-fx">
+            <textarea type="text" class="recipe-description" placeholder="Describe your recipe..."></textarea>
+            <div class="ingredients">
+                <div class="recipe-ingredient">
+                    <div class="item-details">
+                        <h4 class="ingredient-name">Egg</h4>
+                        <span class="serving">
+                            <input type="number" class="amount">
+                            <select class="unit">
+                                <option value="g">Grams</option>
+                                <option value="oz">Ounces</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="item-buttons">
+                        <button type="button" class="select-item">=</button>
+                        <button type="button" class="delete-item">X</button>
+                    </div>
+                </div>
+            </div>
+            <div class="directions"></div>
+            <div class="panel-footer">
+                <button type="button" class="collapse-panel"><</button>
+            </div>
+        </div>
+    </div>
+    
+        <div class="recipe-actions">
+            <button type="button" class="new-recipe">New Recipe</button>
+        </div>
+    </div>
 
-    <div class="modal" id="edit-recipe" state="closed">
+    <div class="modal" id="new-recipe" state="closed">
         <div class="modal-header">
-            <span class="modal-label">Edit Recipe</span>
+            <span class="modal-label">New Recipe</span>
             <button type="button" class="modal-x" fx="hover-fx"></button>
         </div>
         <div class="modal-content">
-            <div class="container" subclass="image-grid">
-                <input type="file" accept="img" class="upload-image" fx="hover-fx" state="front">
-                <h4 class="upload-label">Front image</h4>
-                <div class="container">
-                    <button type="button" class="image-thumbnail" fx="hover-fx" state="front">
-                        <p class="image-label">Front image</p>
-                    </button>
-                    <button type="button" class="image-thumbnail" fx="hover-fx" state="back">
-                        <p class="image-label">Back image</p>
-                    </button>
-                    <button type="button" class="image-thumbnail" fx="hover-fx" state="barcode">
-                        <p class="image-label">Barcode</p>
-                    </button>
-                    <button type="button" class="image-thumbnail" fx="hover-fx" state="nutrition">
-                        <p class="image-label">Nutrition label</p>
-                    </button>
-                    <button type="button" fx="hover-fx" class="image-thumbnail" state="ingredients">
-                        <p class="image-label">Ingredients</p>
-                    </button>
-                </div>
-            </div>
-            <div class="container" subclass="item-details">
-                <input type="text" class="item-name" fx="hover-fx" placeholder="Name">
-                <hr>
-                <h3>Ingredients</h3>
-                <button type="button" class="add-ingredient">Add Ingredient</button>
-                <hr>
-                <input type="text" class="recipe-step" placeholder="Add a new step to your recipe here...">
-                <hr>
-                <input type="number" class="final-weight" placeholder="Final weight of the total recipe after all steps.">
-            </div>
+            <input oninput="updateChooserImage()" type="file" accept="img" class="upload-image" fx="hover-fx">
+            <input type="text" class="recipe-name" placeholder="Name your recipe...">
+            <textarea type="text" class="recipe-description" placeholder="Describe your recipe..."></textarea>
         </div>
         <div class="modal-footer">
             <button type="button" class="modal-cancel" fx="hover-fx">Cancel</button>
-            <button type="button" class="modal-save" fx="hover-fx">Save</button>
+            <button type="button" class="modal-continue" fx="hover-fx">Continue</button>
         </div>
     </div>
 
-    <div class="recipe-actions">
-        <button onclick="" type="button" class="new-recipe">New Recipe</button>
-    </div>
-
-    <div id="recipe-display">
-
-    </div>
 </body>
 </html>

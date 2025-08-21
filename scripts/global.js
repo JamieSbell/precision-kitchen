@@ -1,6 +1,10 @@
 addEventListener('DOMContentLoaded',function() {
     initializeButtons();
-})
+});
+
+const pageData = {
+    currentPage:''
+}
 
 const dataPrefab = 
 {
@@ -15,11 +19,26 @@ const dataPrefab =
             fiber:0,
             fat:0,
             producer:'',
-            id: function() {
-                return JSON.parse(localStorage.getItem('ingredients')).length;
-            }
+            id: getNewId('ingredients')
         },
-    defaultImage:'url("resources/default.png")'
+    defaultImage:'url("resources/default.png")',
+    draftRecipe: function(data) {
+        return {
+            name:data.name,
+            description:data.description,
+            image:data.image,
+            ingredientsPlainText:[],
+            ingredients:{},
+            directions:[],
+            startingWeight:0,
+            finalWeight:0,
+            id: getNewId('recipeDrafts')
+        }
+    }
+}
+
+function getNewId(item) {
+    return JSON.parse(localStorage.getItem(item)).length;
 }
 
 const convert = {
@@ -47,6 +66,22 @@ function initializeButtons()
         toggleCurtain(false);
         })
     }
+    if (currentButton.getAttribute('class') === 'modal-continue') {
+        if (currentButton.closest('.modal').getAttribute('id') === 'new-recipe') {
+                currentButton.addEventListener('click', function() {
+                    let modal = this.closest('.modal');
+                    let name = modal.getElementsByClassName('recipe-name')[0].value;
+                    let description = modal.getElementsByClassName('recipe-description')[0].value;
+                    let image = modal.getElementsByClassName('upload-image')[0].style.backgroundImage;
+                        newDraftRecipe({
+                            'name':name,
+                            'description':description,
+                            'image':image
+                        })
+                    closeModal('new-recipe');
+                    })
+            }
+        }
 
         if (currentButton.getAttribute('class') === 'modal-save') {
             if (currentButton.closest('.modal').getAttribute('id') === 'edit-item') {
@@ -90,25 +125,15 @@ function openModal(modalData,prefillData) {
     let modal = document.getElementById(modalData.id);
     modal.setAttribute('item-id',prefillData.id);
     if (modalData.header !== undefined) {modal.getElementsByClassName('modal-label')[0].textContent = modalData.header}
-    let container1 = modal.getElementsByClassName('container')[0];
-    let container2 = modal.getElementsByClassName('container')[2];
-    if (prefillData.image !== undefined) {
-        container1.getElementsByClassName('upload-image')[0].style.backgroundImage = prefillData.image;
-    }
-    else {
-        container1.getElementsByClassName('upload-image')[0].style.backgroundImage = dataPrefab.defaultImage;
-        container1.getElementsByClassName('upload-image')[0].files[0] = undefined;
+
+    if (modalData.id === 'edit-item') {
+        openModal_editItem(prefillData,modal);
     }
 
-    container2.getElementsByClassName('item-name')[0].value = prefillData.name;
-    container2.getElementsByClassName('tag')[0].value = prefillData.tags;
-    container2.getElementsByClassName('amount')[0].value = prefillData.amount;
-    container2.getElementsByClassName('unit')[0].value = prefillData.unit;
-    container2.getElementsByClassName('protein')[0].value = prefillData.protein;
-    container2.getElementsByClassName('carbs')[0].value = prefillData.carbs;
-    container2.getElementsByClassName('fiber')[0].value = prefillData.fiber;
-    container2.getElementsByClassName('fat')[0].value = prefillData.fat;
-
+    if (modalData.id === 'new-recipe') {
+        openModal_newRecipe(prefillData,modal);
+    }
+    
     modal.setAttribute('state','open');
     toggleCurtain(true);
 }
@@ -137,6 +162,16 @@ function saveIngredient(data) {
     data.image = data.target.getElementsByClassName('upload-image')[0].style.backgroundImage;
     delete data.target;
 
+    if (data.unit !== 'g') {
+        data.amount = convert.ozToGrams(amount);
+        data.protein = convert.ozToGrams(protein);
+        data.carbs = convert.ozToGrams(carbs);
+        data.fiber = convert.ozToGrams(fiber);
+        data.fat = convert.ozToGrams(fat);
+        data.unit = 'g';
+    }
+    data = convert.to100g(data);
+
     let oldData = JSON.parse(localStorage.getItem('ingredients'));
     data = [data];
     if (oldData === null) {
@@ -146,7 +181,9 @@ function saveIngredient(data) {
         localStorage.setItem('ingredients', JSON.stringify(oldData.concat(data)));
     }
     else {
-        refreshElement(document.getElementsByClassName('item')[data[0].id],data[0]);
+        if (pageData.currentPage === 'ingredients') {
+            refreshElement(document.getElementsByClassName('item')[data[0].id],data[0]);
+        }
         oldData[data[0].id] = data[0];
         delete oldData[data[0].id].id;
         localStorage.setItem('ingredients', JSON.stringify(oldData));
@@ -186,7 +223,61 @@ function createItem(data,id) {
 }
 
 function refreshElement(element,data) {
-    if (element.getAttribute('class') === 'item') {
+    if (element === undefined) {
+        document.getElementById('item-grid').appendChild(createItem(data,data.id));
+    }
+
+    else if (element.getAttribute('class') === 'item') {
         document.getElementsByClassName('item')[data.id].replaceWith(createItem(data,data.id));
     }
+}
+
+function searchLocalDatabase(data) {
+    if (data.category == 'ingredients') {searchLocalIngredients(data)}
+}
+
+function searchLocalIngredients(data) {
+    let ingredients = JSON.parse(localStorage.getItem('ingredients'));
+    let item = ingredients.find((obj) => data.searchTerm == obj.name);
+}
+
+function openModal_editItem(prefillData,modal) {
+    let container1 = modal.getElementsByClassName('container')[0];
+    let container2 = modal.getElementsByClassName('container')[2];
+    if (prefillData.image !== undefined) {
+        container1.getElementsByClassName('upload-image')[0].style.backgroundImage = prefillData.image;
+    }
+    else {
+        container1.getElementsByClassName('upload-image')[0].style.backgroundImage = dataPrefab.defaultImage;
+        container1.getElementsByClassName('upload-image')[0].files[0] = undefined;
+    }
+
+    container2.getElementsByClassName('item-name')[0].value = prefillData.name;
+    container2.getElementsByClassName('tag')[0].value = prefillData.tags;
+    container2.getElementsByClassName('amount')[0].value = prefillData.amount;
+    container2.getElementsByClassName('unit')[0].value = prefillData.unit;
+    container2.getElementsByClassName('protein')[0].value = prefillData.protein;
+    container2.getElementsByClassName('carbs')[0].value = prefillData.carbs;
+    container2.getElementsByClassName('fiber')[0].value = prefillData.fiber;
+    container2.getElementsByClassName('fat')[0].value = prefillData.fat;
+
+}
+
+function openModal_newRecipe(prefillData) {
+    
+}
+
+function newDraftRecipe(data) {
+    let oldData = JSON.parse(localStorage.getItem('recipeDrafts'));
+    if (oldData === null) {
+        oldData = '[]';
+        localStorage.setItem('recipeDrafts',oldData);
+    }
+
+    if (oldData !== null) {
+        newData = [dataPrefab.draftRecipe(data)];
+        localStorage.setItem('recipeDrafts',JSON.stringify(JSON.parse(oldData).concat(newData)));
+    }
+
+    localStorage.setItem('currentRecipe',JSON.stringify({category:'recipeDrafts',id:JSON.parse(localStorage.getItem('recipeDrafts')).length}));
 }
