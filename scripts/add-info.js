@@ -8,7 +8,7 @@ function submitInfo() {
     let data = {
         name: document.getElementById('name').value,
         tags: document.getElementById('tags').value.split(','),
-        serving: Number(document.getElementById('serving').value),
+        amount: Number(document.getElementById('amount').value),
         protein: Number(document.getElementById('protein').value),
         carbs: Number(document.getElementById('carbs').value),
         fiber: Number(document.getElementById('fiber').value),
@@ -17,7 +17,7 @@ function submitInfo() {
     };
     //convert ounces to grams
     if (data.unit == 'oz') {
-        data.serving = convert.ozToGrams(serving);
+        data.amount = convert.ozToGrams(amount);
         data.protein = convert.ozToGrams(protein);
         data.carbs = convert.ozToGrams(carbs);
         data.fiber = convert.ozToGrams(fiber);
@@ -38,7 +38,7 @@ function submitInfo() {
 function reset() {
     document.getElementById('name').value = '';
     tags = document.getElementById('tags').value = '';
-    serving = document.getElementById('serving').value = '';
+    amount = document.getElementById('amount').value = '';
     protein = document.getElementById('protein').value = '';
     carbs = document.getElementById('carbs').value = '';
     fiber = document.getElementById('fiber').value = '';
@@ -125,7 +125,7 @@ function createSearchItem(data) {
         editButton.setAttribute('type','button');
         editButton.setAttribute('class','edit');
         editButton.setAttribute('fx','hover-fx');
-        editButton.addEventListener('click',function() {openModal('edit-item',{
+        editButton.addEventListener('click',function() {openModal({id:'edit-item',header:'Edit Ingredient'},{
             name:getItemProperty(editButton.closest('.item'),'name'),
             tags:getItemProperty(editButton.closest('.item'),'tags'),
             unit:getItemProperty(editButton.closest('.item'),'unit'),
@@ -134,7 +134,7 @@ function createSearchItem(data) {
             carbs:getItemProperty(editButton.closest('.item'),'carbs'),
             fiber:getItemProperty(editButton.closest('.item'),'fiber'),
             fat:getItemProperty(editButton.closest('.item'),'fat'),
-            image:getItemProperty(editButton.closest('.item'),'image'),
+            image:'url("' + getItemProperty(editButton.closest('.item'),'image') + '")',
             producer:getItemProperty(editButton.closest('.item'),'producer')
         })
         });

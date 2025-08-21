@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Precision Kitchen</title>
-    <link rel="stylesheet" href="styles/navbar.css">
-    <link rel="stylesheet" href="styles/add-info.css">
+    <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/recipes.css">
+
     <script defer src="scripts/recipes.js"></script>
+    <script defer src="scripts/global.js"></script>
 </head>
 <body>
     <div class="navbar">
@@ -15,7 +16,7 @@
         <a href="ingredients.html">Ingredients</a>
         <a href="recipes.html">Recipes</a>
         <a href="meals.html">Meals</a>
-        <a class="hamburger">Hamburger</a>
+        <button class="hamburger">|||</button>
     </div>
 
     <div class="modal" id="edit-recipe" state="closed">
@@ -63,7 +64,7 @@
     </div>
 
     <div class="recipe-actions">
-        <button type="button" class="new-recipe">New Recipe</button>
+        <button onclick="" type="button" class="new-recipe">New Recipe</button>
     </div>
 
     <div id="recipe-display">
