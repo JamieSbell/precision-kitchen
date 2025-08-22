@@ -19,7 +19,7 @@ const dataPrefab =
             fiber:0,
             fat:0,
             producer:'',
-            id: getNewId('ingredients')
+            id: -1
         },
     defaultImage:'url("resources/default.png")',
     draftRecipe: function(data) {
@@ -32,7 +32,7 @@ const dataPrefab =
             directions:[],
             startingWeight:0,
             finalWeight:0,
-            id: getNewId('recipeDrafts')
+            id: function() { return getNewId('recipeDrafts') }
         }
     }
 }
@@ -162,7 +162,11 @@ function saveIngredient(data) {
     data.image = data.target.getElementsByClassName('upload-image')[0].style.backgroundImage;
     delete data.target;
 
-    if (data.unit !== 'g') {
+    if (data.id == -1) {
+        data.id = getNewId('ingredients');
+    }
+
+    if (data.unit != 'g') {
         data.amount = convert.ozToGrams(amount);
         data.protein = convert.ozToGrams(protein);
         data.carbs = convert.ozToGrams(carbs);
@@ -177,17 +181,15 @@ function saveIngredient(data) {
     if (oldData === null) {
         localStorage.setItem('ingredients', JSON.stringify(data));
     }
-    if (data[0].id === oldData.length) {
+    if (data[0].id == oldData.length) {
         localStorage.setItem('ingredients', JSON.stringify(oldData.concat(data)));
     }
     else {
-        if (pageData.currentPage === 'ingredients') {
-            refreshElement(document.getElementsByClassName('item')[data[0].id],data[0]);
-        }
         oldData[data[0].id] = data[0];
         delete oldData[data[0].id].id;
         localStorage.setItem('ingredients', JSON.stringify(oldData));
     }
+    refreshElement(document.getElementsByClassName('item')[data[0].id],data[0]);
     document.getElementById('edit-item').setAttribute('state','closed');
     toggleCurtain(false);
 }
