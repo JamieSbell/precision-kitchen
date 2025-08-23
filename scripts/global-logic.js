@@ -156,28 +156,6 @@ function updateChooserImage() {
     reader.readAsDataURL(document.getElementsByClassName('upload-image')[0].files[0]);
 }
 
-function createItem(data,id) {
-    
-    data.id = id;
-    let container = document.createElement('div');
-    container.setAttribute('class','item');
-    container.setAttribute('item-data',JSON.stringify(data));
-
-    let icon = document.createElement('button');
-    icon.setAttribute('type','button');
-    icon.setAttribute('class','item-icon');
-    icon.setAttribute('fx','button-fx');
-    icon.addEventListener('click', function() {openModal({id:'edit-item',header:'Edit Ingredient'},JSON.parse(container.getAttribute('item-data')))});
-    icon.style.backgroundImage = data.image;
-
-    let label = document.createElement('h4');
-
-    label.appendChild(document.createTextNode(data.name));
-    container.appendChild(icon);
-    icon.appendChild(label);
-    return(container);
-}
-
 function refreshElement(element,data) {
     if (element === undefined) {
         document.getElementById('item-grid').appendChild(createItem(data,data.id));
