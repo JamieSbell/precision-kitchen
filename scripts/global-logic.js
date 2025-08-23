@@ -2,57 +2,9 @@ addEventListener('DOMContentLoaded',function() {
     initializeButtons();
 });
 
-const pageData = {
-    currentPage:''
-}
-
-const dataPrefab = 
-{
-    emptyIngredient: 
-        {
-            name:'',
-            tags:'',
-            unit:'g',
-            amount:100,
-            protein:0,
-            carbs:0,
-            fiber:0,
-            fat:0,
-            producer:'',
-            id: -1
-        },
-    defaultImage:'url("resources/default.png")',
-    draftRecipe: function(data) {
-        return {
-            name:data.name,
-            description:data.description,
-            image:data.image,
-            ingredientsPlainText:[],
-            ingredients:{},
-            directions:[],
-            startingWeight:0,
-            finalWeight:0,
-            id: function() { return getNewId('recipeDrafts') }
-        }
-    }
-}
-
 function getNewId(item) {
     return JSON.parse(localStorage.getItem(item)).length;
 }
-
-const convert = {
-    ozToGrams: function(oz) {return oz * 28.34952;},
-    to100g: function(data) {
-        data.protein = Math.floor(data.protein / data.amount * 1000) /10;
-        data.carbs = Math.floor(data.carbs / data.amount * 1000) / 10;
-        data.fiber = Math.floor(data.fiber / data.amount * 1000) / 10;
-        data.fat = Math.floor(data.fat / data.amount * 1000) / 10;
-        data.amount = 100;
-        return data;
-        },
-    gramsToOz: function(g) {return g / 28.34952;},
-    };
 
 function initializeButtons()
 {
@@ -189,7 +141,9 @@ function saveIngredient(data) {
         delete oldData[data[0].id].id;
         localStorage.setItem('ingredients', JSON.stringify(oldData));
     }
-    refreshElement(document.getElementsByClassName('item')[data[0].id],data[0]);
+    if (pageData.currentPage === 'ingredients') {
+        refreshElement(document.getElementsByClassName('item')[data[0].id],data[0]);
+    }
     document.getElementById('edit-item').setAttribute('state','closed');
     toggleCurtain(false);
 }
@@ -229,7 +183,7 @@ function refreshElement(element,data) {
         document.getElementById('item-grid').appendChild(createItem(data,data.id));
     }
 
-    else if (element.getAttribute('class') === 'item') {
+    if (element.getAttribute('class') === 'item') {
         document.getElementsByClassName('item')[data.id].replaceWith(createItem(data,data.id));
     }
 }
