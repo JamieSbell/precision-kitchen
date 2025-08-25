@@ -10,7 +10,8 @@ const pageData = {
         recipeCategory:'', 
         recipeId:0,
         showRecipePanel:false
-    }
+    },
+    contextMenu:''
 };
 /**
  * Basic data templates that can be referenced to make other code blocks less verbose & easier to read.

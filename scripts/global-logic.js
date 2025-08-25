@@ -1,6 +1,122 @@
+let context;
+
+const PK = {
+    currentPage:'',
+    currentIngredient:0,
+    currentRecipe:0,
+    contextMenu:0,
+    data: {
+        ingredient:0,
+        recipe:0,
+        meal:0,
+    },
+    element: {
+        navbar:0,
+        alert:0,
+        footer:0,
+        panel:0,
+        search:0,
+        context:0,
+        button: {
+            modalX: () => {
+                let button = document.createElement('button');
+                button.setAttribute('type','button');
+                button.setAttribute('class','x');
+                return button;
+                },
+            modalClose: () => {
+                let button = document.createElement('button');
+                button.setAttribute('type','button');
+                button.setAttribute('class','close');
+                button.appendChild(document.createTextNode('Close'));
+                return button;
+                },
+            modalSave: () => {
+                let button = document.createElement('button');
+                button.setAttribute('type','button');
+                button.setAttribute('class','save');
+                button.appendChild(document.createTextNode('Save'));
+                return button;
+                },
+            modalNext: () => {
+                let button = document.createElement('button');
+                button.setAttribute('type','button');
+                button.setAttribute('class','next');
+                button.appendChild(document.createTextNode('Next'));
+                return button;
+                },
+        },
+        hero:0,
+        modal: {
+            empty: (id) => {
+            let modal = document.createElement('div');
+            modal.setAttribute('class','modal');
+            modal.setAttribute('state','closed');
+            modal.setAttribute('id',id);
+
+            let header = document.createElement('div');
+            header.setAttribute('class','header');
+
+            let content = document.createElement('div');
+            content.setAttribute('class','content');
+
+            let footer = document.createElement('div');
+            footer.setAttribute('class','footer');
+            footer.appendChild(PK.element.button.modalClose);
+
+            let headerLabel = document.createElement('h2');
+            headerLabel.setAttribute('class','label');
+
+            let xButton = PK.element.button.modalX();
+
+            modal.appendChild(header);
+            modal.appendChild(content);
+            modal.appendChild(footer);
+
+            header.appendChild(headerLabel);
+            header.appendChild(xButton);
+
+            return modal;
+            },
+        },
+        item:0,
+        ingredientResult:0,
+        recipeResult:0,
+        ingredientItem:0,
+        recipeItem:0,
+        mealResult:0,
+        mealItem:0,
+    },
+    emptyIngredient:0,
+    draftRecipe:0,
+    missingIngredientImage:0,
+    missingRecipeImage:0,
+    missingMealImage:0,
+    missingUserImage:0,
+    theme: {
+        light:0,
+        dark:0,
+    },
+
+};
+
 addEventListener('DOMContentLoaded',function() {
     initializeButtons();
-});
+    context = document.getElementById('context-menu');
+    }
+);
+addEventListener('contextmenu',function() { rightClick({}); });
+addEventListener('click',function(e) {
+    if ( !Array.from(document.querySelectorAll(':hover')).includes(context) )
+        contextMenu({
+            menu:'closed',
+            elementData:''
+            }
+        );
+    }
+);
+
+
 
 function getNewId(item) {
     return JSON.parse(localStorage.getItem(item)).length;
@@ -14,9 +130,11 @@ function initializeButtons()
     let currentButton = buttonsArray[i];
 
     if (currentButton.getAttribute('class') === 'modal-cancel' || currentButton.getAttribute('class') === 'modal-x') {
-        currentButton.addEventListener('click', function() {currentButton.closest('.modal').setAttribute('state','closed');
-        toggleCurtain(false);
-        })
+        currentButton.addEventListener('click', function() {
+            currentButton.closest('.modal').setAttribute('state','closed');
+            toggleCurtain(false);
+            }
+        );
     }
     if (currentButton.getAttribute('class') === 'modal-continue') {
         if (currentButton.closest('.modal').getAttribute('id') === 'new-recipe') {
@@ -214,4 +332,69 @@ function newDraftRecipe(data) {
     }
 
     localStorage.setItem('currentRecipe',JSON.stringify({category:'recipeDrafts',id:JSON.parse(localStorage.getItem('recipeDrafts')).length}));
+}
+
+function rightClick(data) {
+    let e = window.event;
+    data = topContextElement(document.querySelectorAll(':hover'));
+    if (pageData.contextMenu !== data.menu) {
+        e.preventDefault();
+        contextMenu(data);
+    }
+    else {
+        contextMenu({
+            menu:'closed',
+            elementData:''
+            }
+        );
+    }
+}
+
+function topContextElement(elements) {
+    let canRightClick = ['item'];
+    let pickedElement = '';
+    let itemData;
+    for (let i = elements.length - 1; i > 0 && pickedElement === '' ; i--) {
+        if (canRightClick.includes(elements[i].getAttribute('class'))) {
+            pickedElement = elements[i].getAttribute('class') + '-context';
+            if (elements[i].getAttribute('item-data') !== null) {
+                itemData = elements[i].getAttribute('item-data');
+            }
+        }
+    }
+    let returnData = {
+        menu:pickedElement,
+        elementData:itemData
+    }
+
+    if (pickedElement !== '')
+    {
+        return returnData;
+    }
+    else {
+        return {
+            menu:'body-context',
+            elementData:''
+        }
+    }
+}
+
+function contextMenu(data) {
+    context.style.left = window.event.clientX + 'px';
+    context.style.top = window.event.clientY + 'px';
+    console.log('X: ' + context.style.left + ', Y:' + context.style.top);
+    pageData.contextMenu = data.menu;
+    context.setAttribute('state',data.menu);
+    context.setAttribute('item-data',data.elementData);
+
+    for (let i = 0; i < context.children.length; i++)
+    {
+        let child = context.children[i];
+        if (child.getAttribute('class') !== data.menu) {
+            child.style.display = "none";
+        }
+        else {
+            child.style.display = "flex";
+        }
+    }
 }

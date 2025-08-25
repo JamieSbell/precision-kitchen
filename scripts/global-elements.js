@@ -2,7 +2,6 @@
  * A data object that stores prefabs of HTML elements that are used throughout Precision Kitchen. Currently empty, but it's being stored for future use.
  */
 const elementPrefeb = {
-    modal:0,
     alert:0,
     savedIngredient:0,
     savedRecipe:0,
@@ -32,7 +31,7 @@ function createItem(data,id) {
     let icon = document.createElement('button');
     icon.setAttribute('type','button');
     icon.setAttribute('class','item-icon');
-    icon.setAttribute('fx','button-fx');
+    icon.setAttribute('fx','hover-fx');
     icon.addEventListener('click', function() {openModal({id:'edit-item',header:'Edit Ingredient'},JSON.parse(container.getAttribute('item-data')))});
     icon.style.backgroundImage = data.image;
 
@@ -57,35 +56,10 @@ function openTheModal(data) {
 }
 
 function createModal(data) {
-    let modal = document.createElement('div');
-    modal.setAttribute('class','modal');
-    modal.setAttribute('id',data.modalId);
-    modal.setAttribute('state','closed');
-
-    let header = document.createElement('div');
-    header.setAttribute('class','header');
-
-    let content = document.createElement('div');
-    content.setAttribute('class','content');
-
-    let footer = document.createElement('div');
-    footer.setAttribute('class','footer');
-
-    let headerLabel = document.createElement('h2');
-    headerLabel.setAttribute('class','label');
-
-    let xButton = document.createElement('button');
-    xButton.setAttribute('type','button');
-
-    modal.appendChild(header);
-    modal.appendChild(content);
-    modal.appendChild(footer);
-
-    header.appendChild(headerLabel);
-    header.appendChild(xButton);
-
-    modal = fillModal(data, modal, header, content, footer);
-    return data.modal;
+    let modal = elementPrefeb.emptyModal(data.id);
+    let header = modal.getElementsByClassName('header');
+    let label = header.getElementsByClassName('label');
+    label.appendChild(document.createTextNode(data.label));
 }
 
 function fillModal(data, modal, header, content, footer) {
@@ -95,7 +69,5 @@ function fillModal(data, modal, header, content, footer) {
     let button2 = button1;
     button1.setAttribute('class','primary');
     button2.setAttribute('class','secondary');
-
-
 }
 

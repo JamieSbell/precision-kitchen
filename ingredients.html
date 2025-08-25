@@ -15,6 +15,22 @@
     <link rel="stylesheet" href="styles/ingredients.css">
 </head>
 <body>
+    <div id="context-menu" state="closed" item-data="">
+        <div class="item-context">
+            <input type="text" class="ingredient-name">
+            <hr>
+            <button type="button" fx="context-item" class="add-to-recipe">Add to recipe</button>
+            <button type="button" fx="context-item" class="duplicate">Duplicate</button>
+            <button type="button" fx="context-item" class="edit-ingredient">Edit</button>
+            <hr>
+            <button type="button" fx="context-item" class="delete-ingredient">Delete</button>
+        </div>
+
+        <div class="body-context">
+            <button type="button" fx="context-item" class="new-ingredient">Create new ingredient</button>
+            <button type="button" fx="context-item" class="search-ingredients">Search for ingredients</button>
+        </div>
+    </div>
     <div class="navbar">
         <a href="home.html" class="home-button">Precision Kitchen</a>
         <a href="ingredients.html">Ingredients</a>
@@ -22,6 +38,8 @@
         <a href="meals.html">Meals</a>
         <a class="hamburger">Hamburger</a>
     </div>
+
+    <div class="modal" id="delete-item" state="closed"></div>
 
     <div class="modal" id="edit-item" state="closed">
         <div class="modal-header">
