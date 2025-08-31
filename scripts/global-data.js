@@ -11,7 +11,7 @@ const pageData = {
         recipeId:0,
         showRecipePanel:false
     },
-    contextMenu:''
+    contextMenu:'closed'
 };
 /**
  * Basic data templates that can be referenced to make other code blocks less verbose & easier to read.

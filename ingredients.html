@@ -17,13 +17,16 @@
 <body>
     <div id="context-menu" state="closed" item-data="">
         <div class="item-context">
-            <input type="text" class="ingredient-name">
+            <div class="ingredient-name">
+                <input type="text" class="ingredient-name-input" fx="context-item">
+                <button type="button" class="save-ingredient-name" fx="context-item" onclick="PK.context.saveName()">Save</button>
+            </div>
             <hr>
             <button type="button" fx="context-item" class="add-to-recipe">Add to recipe</button>
             <button type="button" fx="context-item" class="duplicate">Duplicate</button>
-            <button type="button" fx="context-item" class="edit-ingredient">Edit</button>
+            <button type="button" fx="context-item" class="edit-ingredient" onclick="PK.context.edit()">Edit</button>
             <hr>
-            <button type="button" fx="context-item" class="delete-ingredient">Delete</button>
+            <button type="button" fx="context-item" class="delete-ingredient" onclick="PK.context.delete()">Delete</button>
         </div>
 
         <div class="body-context">

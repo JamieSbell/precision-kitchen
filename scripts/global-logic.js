@@ -4,20 +4,119 @@ const PK = {
     currentPage:'',
     currentIngredient:0,
     currentRecipe:0,
-    contextMenu:0,
+    context: {
+        action: (action) => {
+            
+        },
+        saveName: () => {
+            oldData = JSON.parse(localStorage.getItem('ingredients'));
+            newName = context.getElementsByClassName('ingredient-name-input')[0].value;
+            oldData[PK.context.data.id].name = newName;
+            PK.context.data.name = newName;
+            localStorage.setItem('ingredients', JSON.stringify(oldData));
+            refreshElement(document.getElementsByClassName('item')[PK.context.data.id],PK.context.data);
+            contextMenu({
+                menu:'closed',
+                elementData:''
+                }
+            );
+        },
+        delete: () => { 
+            oldData = JSON.parse(localStorage.getItem('ingredients'));
+            oldData.splice(PK.context.data.id,1);
+            localStorage.setItem('ingredients', JSON.stringify(oldData));
+            refreshElement(document.getElementsByClassName('item')[PK.context.data.id],{id:PK.context.data.id,delete:'delete'});
+            contextMenu({
+                menu:'closed',
+                elementData:''
+                }
+            );
+        },
+        edit: () => { 
+            openModal({id:'edit-item',header:'Edit Ingredient'},PK.context.data)
+        },
+        addToRecipe: () => { 
+
+        },
+        menu:0,
+        data:0,
+        },
     data: {
         ingredient:0,
         recipe:0,
         meal:0,
-    },
+        },
     element: {
         navbar:0,
         alert:0,
         footer:0,
         panel:0,
         search:0,
-        context:0,
+        context:{
+            ingredient: () => {
+                let menu = document.createElement('div');
+                menu.setAttribute('class','ingredient-context');
+
+                let label = document.createElement('input');
+                label.setAttribute('type','text');
+                label.setAttribute('class','ingredient-name-input');
+
+                let button1 = document.createElement('button');
+                button1.setAttribute('type','button');
+                button1.setAttribute('fx','context-item');
+                button1.setAttribute('class','add-to-recipe');
+
+                let button2 = document.createElement('button');
+                button2.setAttribute('type','button');
+                button2.setAttribute('fx','context-item');
+                button2.setAttribute('class','duplicate');
+
+                let button3 = PK.element.button.construct({
+                    action: {
+                        type:'openModal',
+                        data: {
+                            id:'edit-item',
+                            header:'Edit Ingredient'
+                            }
+                        },
+                    fx:'context-item',
+                    class:'edit-ingredient'
+                    });
+                button3.setAttribute('type','button');
+                button3.setAttribute('fx','context-item');
+                button3.setAttribute('class','edit-ingredient');
+
+                let button4 = PK.element.button.construct({
+                    action: {
+                        type:'openModal',
+                        data: { id:'delete-ingredient' }
+                        },
+                    fx:'context-item',
+                    class:'delete-ingredient'
+                    });
+
+                menu.appendChild(label,document.createElement('hr'),button1,button2,button3,document.createElement('hr'),button4);
+                return menu;
+                },
+            body:0,
+            recipe:0,
+            meal:0,
+
+            },
         button: {
+
+            construct: (data) => {
+                let button = document.createElement('button');
+                button.type = button;
+                button.className = data.class;
+                if (data.fx !== '') { button.setAttribute('fx',data.fx); }
+                if (data.action !== '') {
+                    button.addEventListener('click', function() {
+                        addButtonAction(data.action); 
+                        })
+                    }
+                return button;
+            },
             modalX: () => {
                 let button = document.createElement('button');
                 button.setAttribute('type','button');
@@ -49,36 +148,36 @@ const PK = {
         hero:0,
         modal: {
             empty: (id) => {
-            let modal = document.createElement('div');
-            modal.setAttribute('class','modal');
-            modal.setAttribute('state','closed');
-            modal.setAttribute('id',id);
+                let modal = document.createElement('div');
+                modal.setAttribute('class','modal');
+                modal.setAttribute('state','closed');
+                modal.setAttribute('id',id);
 
-            let header = document.createElement('div');
-            header.setAttribute('class','header');
+                let header = document.createElement('div');
+                header.setAttribute('class','header');
 
-            let content = document.createElement('div');
-            content.setAttribute('class','content');
+                let content = document.createElement('div');
+                content.setAttribute('class','content');
 
-            let footer = document.createElement('div');
-            footer.setAttribute('class','footer');
-            footer.appendChild(PK.element.button.modalClose);
+                let footer = document.createElement('div');
+                footer.setAttribute('class','footer');
+                footer.appendChild(PK.element.button.modalClose);
 
-            let headerLabel = document.createElement('h2');
-            headerLabel.setAttribute('class','label');
+                let headerLabel = document.createElement('h2');
+                headerLabel.setAttribute('class','label');
 
-            let xButton = PK.element.button.modalX();
+                let xButton = PK.element.button.modalX();
 
-            modal.appendChild(header);
-            modal.appendChild(content);
-            modal.appendChild(footer);
+                modal.appendChild(header);
+                modal.appendChild(content);
+                modal.appendChild(footer);
 
-            header.appendChild(headerLabel);
-            header.appendChild(xButton);
+                header.appendChild(headerLabel);
+                header.appendChild(xButton);
 
-            return modal;
+                return modal;
+                },
             },
-        },
         item:0,
         ingredientResult:0,
         recipeResult:0,
@@ -86,7 +185,7 @@ const PK = {
         recipeItem:0,
         mealResult:0,
         mealItem:0,
-    },
+        },
     emptyIngredient:0,
     draftRecipe:0,
     missingIngredientImage:0,
@@ -102,12 +201,13 @@ const PK = {
 
 addEventListener('DOMContentLoaded',function() {
     initializeButtons();
-    context = document.getElementById('context-menu');
+    PK.context.menu = document.getElementById('context-menu');
+    context = PK.context.menu;
     }
 );
 addEventListener('contextmenu',function() { rightClick({}); });
 addEventListener('click',function(e) {
-    if ( !Array.from(document.querySelectorAll(':hover')).includes(context) )
+    if ( !Array.from(document.querySelectorAll(':hover')).includes(context) && pageData.contextMenu !== 'closed')
         contextMenu({
             menu:'closed',
             elementData:''
@@ -115,8 +215,6 @@ addEventListener('click',function(e) {
         );
     }
 );
-
-
 
 function getNewId(item) {
     return JSON.parse(localStorage.getItem(item)).length;
@@ -276,12 +374,18 @@ function updateChooserImage() {
 
 function refreshElement(element,data) {
     if (element === undefined) {
-        document.getElementById('item-grid').appendChild(createItem(data,data.id));
+        element = createItem(data,data.id)
+        document.getElementById('item-grid').appendChild(element);
     }
 
-    if (element.getAttribute('class') === 'item') {
+    if (element.getAttribute('class') === 'item' && data.delete !== 'delete') {
         document.getElementsByClassName('item')[data.id].replaceWith(createItem(data,data.id));
     }
+
+    if (element.getAttribute('class') === 'item' && data.delete === 'delete') {
+        document.getElementById('item-grid').removeChild(document.getElementsByClassName('item')[data.id]);
+    }
+    
 }
 
 function searchLocalDatabase(data) {
@@ -298,12 +402,11 @@ function openModal_editItem(prefillData,modal) {
     let container2 = modal.getElementsByClassName('container')[2];
     if (prefillData.image !== undefined) {
         container1.getElementsByClassName('upload-image')[0].style.backgroundImage = prefillData.image;
-    }
+        }
     else {
         container1.getElementsByClassName('upload-image')[0].style.backgroundImage = dataPrefab.defaultImage;
         container1.getElementsByClassName('upload-image')[0].files[0] = undefined;
-    }
-
+        }
     container2.getElementsByClassName('item-name')[0].value = prefillData.name;
     container2.getElementsByClassName('tag')[0].value = prefillData.tags;
     container2.getElementsByClassName('amount')[0].value = prefillData.amount;
@@ -312,8 +415,7 @@ function openModal_editItem(prefillData,modal) {
     container2.getElementsByClassName('carbs')[0].value = prefillData.carbs;
     container2.getElementsByClassName('fiber')[0].value = prefillData.fiber;
     container2.getElementsByClassName('fat')[0].value = prefillData.fat;
-
-}
+    }
 
 function openModal_newRecipe(prefillData) {
     
@@ -359,16 +461,18 @@ function topContextElement(elements) {
             pickedElement = elements[i].getAttribute('class') + '-context';
             if (elements[i].getAttribute('item-data') !== null) {
                 itemData = elements[i].getAttribute('item-data');
+                itemData.id = i;
             }
         }
     }
-    let returnData = {
-        menu:pickedElement,
-        elementData:itemData
-    }
+    
 
     if (pickedElement !== '')
     {
+        let returnData = {
+            menu:pickedElement,
+            elementData:JSON.parse(itemData)
+            }
         return returnData;
     }
     else {
@@ -382,19 +486,26 @@ function topContextElement(elements) {
 function contextMenu(data) {
     context.style.left = window.event.clientX + 'px';
     context.style.top = window.event.clientY + 'px';
-    console.log('X: ' + context.style.left + ', Y:' + context.style.top);
     pageData.contextMenu = data.menu;
     context.setAttribute('state',data.menu);
-    context.setAttribute('item-data',data.elementData);
-
+    PK.context.data = data.elementData;
     for (let i = 0; i < context.children.length; i++)
     {
         let child = context.children[i];
         if (child.getAttribute('class') !== data.menu) {
             child.style.display = "none";
-        }
+            }
         else {
             child.style.display = "flex";
-        }
+            if (child.getElementsByClassName('ingredient-name-input')[0] !== null) {
+                child.getElementsByClassName('ingredient-name-input')[0].value = PK.context.data.name;
+                }
+            }
+    }
+}
+
+function addButtonAction(action) {
+    if (action.type === 'openModal') {
+        openModal(action.data,PK.context.data);
     }
 }
