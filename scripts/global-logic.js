@@ -47,58 +47,117 @@ const PK = {
         meal:0,
         },
     element: {
-        navbar:0,
+        navbar: () => {
+            let nav = document.createElement('div');
+            let home = document.createElement('a');
+            let ingredients = document.createElement('a');
+            let recipes = document.createElement('a');
+            let meals = document.createElement('a');
+            let hamburger = document.createElement('a');
+
+            nav.className = 'navbar';
+
+            home.className = 'home-button';
+            home.href = 'home.html';
+            home.textContent = 'Precision Kitchen';
+
+            ingredients.href = 'ingredients.html';
+            ingredients.textContent = 'Ingredients';
+
+            recipes.href = 'recipes.html';
+            recipes.textContent = 'Recipes';
+
+            meals.href = 'meals.html';
+            meals.textContent = 'Meals';
+
+            hamburger.className = 'hamburger';
+            hamburger.textContent = '|||';
+
+            nav.append(home,ingredients,recipes,meals,hamburger);
+            return nav;
+        },
         alert:0,
         footer:0,
         panel:0,
         search:0,
         context:{
+
+            createMenu: () => {
+                let container = document.createElement('div');
+                container.id = 'context-menu';
+                container.setAttribute('state','closed');
+
+                container.append(PK.element.context.ingredient(),PK.element.context.body());
+                return container;
+            },
             ingredient: () => {
                 let menu = document.createElement('div');
-                menu.setAttribute('class','ingredient-context');
-
+                menu.className = 'item-context';
+                
                 let label = document.createElement('input');
-                label.setAttribute('type','text');
-                label.setAttribute('class','ingredient-name-input');
+                label.type = 'text';
+                label.className = 'ingredient-name-input';
+                
+                let labelButton = document.createElement('button');
+                labelButton.type = 'button';
+                labelButton.className = 'save-ingredient-name';
+                labelButton.onclick = () => {PK.context.saveName()};
+                labelButton.textContent = 'Save';
+                labelButton.setAttribute('fx','context-item');
+                
+                labelContainer = document.createElement('div');
+                labelContainer.className = 'ingredient-name';
+                labelContainer.append(label,labelButton);
 
                 let button1 = document.createElement('button');
-                button1.setAttribute('type','button');
+                button1.type = 'button';
+                button1.className = 'add-to-recipe';
                 button1.setAttribute('fx','context-item');
-                button1.setAttribute('class','add-to-recipe');
+                button1.textContent = 'Add to recipe';
 
                 let button2 = document.createElement('button');
-                button2.setAttribute('type','button');
+                button2.type = 'button';
                 button2.setAttribute('fx','context-item');
                 button2.setAttribute('class','duplicate');
+                button2.textContent = 'Duplicate';
 
-                let button3 = PK.element.button.construct({
-                    action: {
-                        type:'openModal',
-                        data: {
-                            id:'edit-item',
-                            header:'Edit Ingredient'
-                            }
-                        },
-                    fx:'context-item',
-                    class:'edit-ingredient'
-                    });
-                button3.setAttribute('type','button');
+                let button3 = document.createElement('button');
+                button3.type = 'button';
+                button3.className = 'edit-ingredient';
                 button3.setAttribute('fx','context-item');
-                button3.setAttribute('class','edit-ingredient');
+                button3.onclick = () => {PK.context.edit()};
+                button3.textContent = 'Edit';
 
-                let button4 = PK.element.button.construct({
-                    action: {
-                        type:'openModal',
-                        data: { id:'delete-ingredient' }
-                        },
-                    fx:'context-item',
-                    class:'delete-ingredient'
-                    });
+                let button4 = document.createElement('button');
+                button4.type = 'button';
+                button4.className = 'delete-ingredient';
+                button4.setAttribute('fx','context-item');
+                button4.onclick = () => {PK.context.delete()};
+                button4.textContent = 'Delete';
 
-                menu.appendChild(label,document.createElement('hr'),button1,button2,button3,document.createElement('hr'),button4);
+                menu.append(labelContainer,document.createElement('hr'),button1,button2,button3,document.createElement('hr'),button4);
                 return menu;
                 },
-            body:0,
+            body: () => {
+                let menu = document.createElement('div');
+                menu.className = 'body-context';
+
+                let button1 = document.createElement('button');
+                button1.type = 'button';
+                button1.className = 'new-ingredient';
+                button1.setAttribute('fx','context-item');
+                button1.textContent = 'New ingredient';
+                button1.onclick = () => {openModal({id:'edit-item',header:'New Ingredient'},dataPrefab.emptyIngredient)};
+
+                let button2 = document.createElement('a');
+                button2.setAttribute('fx','context-item');
+                button2.setAttribute('class','search-ingredients');
+                button2.href = 'ingredient-search.html';
+                button2.textContent = 'Search for ingredients';
+
+                menu.append(button1 ,button2);
+                return menu;
+            },
             recipe:0,
             meal:0,
 
@@ -200,6 +259,8 @@ const PK = {
 };
 
 addEventListener('DOMContentLoaded',function() {
+    document.body.insertBefore(PK.element.navbar(),document.body.firstChild);
+    document.body.append(PK.element.context.createMenu());
     initializeButtons();
     PK.context.menu = document.getElementById('context-menu');
     context = PK.context.menu;

@@ -15,32 +15,6 @@
     <link rel="stylesheet" href="styles/ingredients.css">
 </head>
 <body>
-    <div id="context-menu" state="closed" item-data="">
-        <div class="item-context">
-            <div class="ingredient-name">
-                <input type="text" class="ingredient-name-input" fx="context-item">
-                <button type="button" class="save-ingredient-name" fx="context-item" onclick="PK.context.saveName()">Save</button>
-            </div>
-            <hr>
-            <button type="button" fx="context-item" class="add-to-recipe">Add to recipe</button>
-            <button type="button" fx="context-item" class="duplicate">Duplicate</button>
-            <button type="button" fx="context-item" class="edit-ingredient" onclick="PK.context.edit()">Edit</button>
-            <hr>
-            <button type="button" fx="context-item" class="delete-ingredient" onclick="PK.context.delete()">Delete</button>
-        </div>
-
-        <div class="body-context">
-            <button type="button" fx="context-item" class="new-ingredient">Create new ingredient</button>
-            <button type="button" fx="context-item" class="search-ingredients">Search for ingredients</button>
-        </div>
-    </div>
-    <div class="navbar">
-        <a href="home.html" class="home-button">Precision Kitchen</a>
-        <a href="ingredients.html">Ingredients</a>
-        <a href="recipes.html">Recipes</a>
-        <a href="meals.html">Meals</a>
-        <a class="hamburger">Hamburger</a>
-    </div>
 
     <div class="modal" id="delete-item" state="closed"></div>
 

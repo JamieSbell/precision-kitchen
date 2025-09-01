@@ -6,5 +6,3 @@ if (document.getElementById('item-grid').getAttribute('state') == 'default-empty
         document.getElementById('item-grid').appendChild(createItem(ingredients[i],i));
     }
 }
-
-document.getElementsByClassName('new-ingredient')[0].addEventListener('click',function() {openModal({id:'edit-item',header:'New Ingredient'},dataPrefab.emptyIngredient)});

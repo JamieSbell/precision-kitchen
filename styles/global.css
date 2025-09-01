@@ -6,6 +6,7 @@
     background-position: center;
     border: none;
     padding: 0;
+    resize: none;
 }
 
 :root{
@@ -69,6 +70,7 @@ hr{
 
 .navbar .hamburger{
     margin-left: auto;
+    background-image: url("../resources/hamburger.svg");
 }
 
 /* Modal styling */
@@ -405,6 +407,21 @@ hr{
     position: relative;
     top: 100%;
     left: 100%;
+}
+
+#current-recipe .select-item {
+    background-image: url("../resources/more-button.svg");
+    background-size: contain;
+    width: 16px;
+    height: 16px;
+    margin-bottom: 8px;
+}
+
+#current-recipe .delete-item {
+    background-image: url("../resources/trash.svg");
+    background-size: contain;
+    width: 16px;
+    height: 16px;
 }
 
 /* Context menu styling */
